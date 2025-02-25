@@ -14,12 +14,19 @@ def get_metter_ids():
     meters_result   = []
     local_conn      = db_connections.local_database()
     query           = local_conn.cursor(dictionary=True)
-    sql             = f"""SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter FROM sensors 
-                            LEFT JOIN sensor_registers 
-                                ON sensors.sensor_register_id = sensor_registers.id
-                            LEFT JOIN sensor_types 
-                                ON  sensor_registers.sensor_type_id = sensor_types.id
-                                    WHERE sensors.gateway_id = {gateway_id}"""
+    #sql             = f"""SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter FROM sensors 
+     #                       LEFT JOIN sensor_registers 
+      #                          ON sensors.sensor_register_id = sensor_registers.id
+       #                     LEFT JOIN sensor_types 
+        #                        ON  sensor_registers.sensor_type_id = sensor_types.id
+         #                           WHERE sensors.gateway_id = {gateway_id}"""
+                                    
+    sql             = f""" SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter FROM sensors
+                            LEFT JOIN sensor_models
+                                ON sensors.sensor_model_id = sensor_models.id
+                            LEFT JOIN sensor_types
+                                ON sensor_models.sensor_type_id = sensor_types.id
+                            WHERE sensors.gateway_id = {gateway_id}"""
     query.execute(sql)
     
     results     = query.fetchall()

@@ -11,9 +11,9 @@ def cloud_database():
     try:
         cloud_connection = mysql.connector.connect(
                         host = "srv1742.hstgr.io",
-                        user = "u565803524_dev_enmms",
-                        password = "yr7Yu8^o2I8*",
-                        database="u565803524_dev_enmms"
+                        user = "u565803524_test_enmms",
+                        password = "K6sY]0Oz+6",
+                        database="u565803524_test_enmms"
                     )
         if cloud_connection.is_connected():
             return cloud_connection
@@ -31,7 +31,7 @@ def local_database():
                         host = "localhost",
                         user = "root",
                         password = "Kyle",
-                        database="enmms"
+                        database="enmms_test"
                     )
         if local_database.is_connected():
             return local_database
@@ -46,7 +46,7 @@ def sync(gateway_id, fromCloudToLocal = True):
     from_conn       = cloud_database() if fromCloudToLocal else local_database()
     from_query      = from_conn.cursor(dictionary=True)
     
-    from_sql        = f"""SELECT * FROM sensor_offlines WHERE gateway_id = {gateway_id} ORDER BY id DESC"""
+    from_sql        = f"""SELECT * FROM sensor_offlines WHERE gateway_id = {gateway_id} ORDER BY id"""
     from_query.execute(from_sql)
 
     from_result     = from_query.fetchall()

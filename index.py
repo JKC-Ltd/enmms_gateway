@@ -24,8 +24,8 @@ client          = ModbusSerialClient(
 
 
 #SYNCING DATA FROM CLOUD TO LOCAL
-#if(db_connections.cloud_database()):
-#    db_connections.sync(gateway_id)
+if(db_connections.cloud_database()):
+    db_connections.sync(gateway_id)
     
 #SYNCING DATA FROM LOCAL TO CLOUD
 if(db_connections.local_database()):
@@ -40,7 +40,8 @@ meter_results   = gateway_config.get_metter_ids()
 #     {'id': 2, 'slave_address': '6', 'register_address': [0, 6, 12, 18, 342], 'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'real_power']}, 
 #     {'id': 3, 'slave_address': '7', 'register_address': [0, 6, 12, 18, 342], 'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'real_power']}
 # ]
-
+#print(meter_results)
+#sys.exit()
 # ALGORITHM WORKS BELOW
 
 # SAMPLE VALUE OF METERS
