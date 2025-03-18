@@ -30,8 +30,8 @@ def local_database():
         local_database = mysql.connector.connect(
                         host = "localhost",
                         user = "root",
-                        password = "Kyle",
-                        database="enmms_test"
+                        password = "0smartPower0",
+                        database="enmms"
                     )
         if local_database.is_connected():
             return local_database
