@@ -33,7 +33,7 @@ if(db_connections.local_database()):
 
 # sys.exit()
 
-# GETTING METTERS DATA ehsonmabait
+# GETTING METTERS DATA 
 meter_results   = gateway_config.get_metter_ids()
 # [
 #     {'id': 1, 'slave_address': '5', 'register_address': [0, 6, 12, 18, 342], 'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'real_power']}, 
