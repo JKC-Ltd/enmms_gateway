@@ -21,7 +21,7 @@ def get_metter_ids():
         #                        ON  sensor_registers.sensor_type_id = sensor_types.id
          #                           WHERE sensors.gateway_id = {gateway_id}"""
                                     
-    sql             = f""" SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter FROM sensors
+    sql             = f""" SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter, sensor_model.id AS sensor_model_id FROM sensors
                             LEFT JOIN sensor_models
                                 ON sensors.sensor_model_id = sensor_models.id
                             LEFT JOIN sensor_types
@@ -35,6 +35,7 @@ def get_metter_ids():
         exploded_reg_address    = [int(value) for value in row['sensor_reg_address'].split(',')]
         exploded_parameter      = [str(value) for value in row['sensor_type_parameter'].split(',')]
         data      = {   'id':row['id'] , 
+                        'sensor_model_id': row['sensor_model_id'],
                         'slave_address': row['slave_address'], 
                         'register_address': exploded_reg_address, 
                         'parameter': exploded_parameter
