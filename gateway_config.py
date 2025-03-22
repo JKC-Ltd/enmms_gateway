@@ -48,5 +48,5 @@ def get_metter_ids():
     return meters_result
 
     
-# THIS CODE UNDER IS MORE LIKELY THE IMPLODE IN PHP
+# THIS CODE UNDER IS MORE LIKELY THE IMPLODE IN PHP 
 # column_parameter = ", ".join(register_address["parameter"])
