@@ -40,8 +40,8 @@ meter_results   = gateway_config.get_metter_ids()
 #     {'id': 2, 'slave_address': '6', 'register_address': [0, 6, 12, 18, 342], 'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'real_power']}, 
 #     {'id': 3, 'slave_address': '7', 'register_address': [0, 6, 12, 18, 342], 'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'real_power']}
 # ]
-print(meter_results)
-sys.exit()
+#print(meter_results)
+#sys.exit()
 # ALGORITHM WORKS BELOW
 
 # SAMPLE VALUE OF METERS
@@ -49,6 +49,7 @@ sample_data     = [12,34,56,78,910]
 sample_result   = []
 
 for meter_result in meter_results:
+    model_id            = meter_result['sensor_model_id']
     meter_id            = meter_result['id']
     slave_address       = int(meter_result['slave_address'])
     columns             = ["gateway_id","sensor_id"] + meter_result['parameter'] + ['datetime_created']
@@ -61,9 +62,12 @@ for meter_result in meter_results:
         
         if client.connect():
             try:
-                # response = client.read_input_registers(address=int(register_address), count=2, slave=slave_address)
-                response = client.read_holding_registers(address=int(register_address), count=2, slave=slave_address)
-
+    
+                if model_id == 1:
+                    response = client.read_holding_registers(address=int(register_address), count=2, slave=slave_address)
+                else:
+                    response = client.read_input_registers(address=int(register_address), count=2, slave=slave_address)
+                    
                 #response = client.read_input_registers(address=0, count=2, slave=6)
                 if not response.isError():
                     #sensor_value     = "%.2f"%sample_data[i]

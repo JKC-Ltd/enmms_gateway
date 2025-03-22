@@ -6,8 +6,8 @@ from datetime import datetime
 import sys
 
 # DECLARING ID's
-gateway_id      = 1
-gateway_code    = "GAT-01"
+gateway_id      = 2
+gateway_code    = "GAT-02"
 
 
 def get_metter_ids():
@@ -21,7 +21,7 @@ def get_metter_ids():
         #                        ON  sensor_registers.sensor_type_id = sensor_types.id
          #                           WHERE sensors.gateway_id = {gateway_id}"""
                                     
-    sql             = f""" SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter, sensor_model.id AS sensor_model_id FROM sensors
+    sql             = f""" SELECT sensors.id AS id, slave_address, sensor_reg_address, sensor_type_parameter, sensor_models.id AS sensor_model_id FROM sensors
                             LEFT JOIN sensor_models
                                 ON sensors.sensor_model_id = sensor_models.id
                             LEFT JOIN sensor_types
