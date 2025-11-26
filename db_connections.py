@@ -29,8 +29,8 @@ def local_database():
     try:
         local_database = mysql.connector.connect(
                         host = "localhost",
-                        user = "root",
-                        password = "0smartPower0",
+                        user = "marvin",
+                        password = "0Ryan0",
                         database="enmms"
                     )
         if local_database.is_connected():
@@ -112,3 +112,4 @@ def sync(gateway_id, fromCloudToLocal = True):
 # `sensor_reg_address` = VALUES(`sensor_reg_address`), 
 # `updated_at` = VALUES(`updated_at`), 
 # `created_at` = VALUES(`created_at`)
+
