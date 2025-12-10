@@ -1,28 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.2
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1:3306
--- Generation Time: Dec 02, 2025 at 11:55 AM
--- Server version: 11.8.3-MariaDB-log
--- PHP Version: 7.2.34
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `u565803524_siix`
---
-
--- --------------------------------------------------------
-
 --
 -- Table structure for table `cache`
 --
@@ -38,12 +13,14 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('admin@smartpower.com|127.0.0.1', 'i:2;', 1765179894),
+('admin@smartpower.com|127.0.0.1:timer', 'i:1765179893;', 1765179894),
 ('admin@smartpowerph.com|119.94.165.133', 'i:3;', 1764244778),
 ('admin@smartpowerph.com|119.94.165.133:timer', 'i:1764244778;', 1764244778),
 ('admin@smartpowerph.com|119.94.167.195', 'i:2;', 1747762973),
 ('admin@smartpowerph.com|119.94.167.195:timer', 'i:1747762973;', 1747762973),
-('admin@smartpowerph.com|127.0.0.1', 'i:1;', 1747637217),
-('admin@smartpowerph.com|127.0.0.1:timer', 'i:1747637216;', 1747637216),
+('admin@smartpowerph.com|127.0.0.1', 'i:1;', 1765123105),
+('admin@smartpowerph.com|127.0.0.1:timer', 'i:1765123104;', 1765123104),
 ('admin@smartpowerph.com|136.158.10.191', 'i:2;', 1750329397),
 ('admin@smartpowerph.com|136.158.10.191:timer', 'i:1750329397;', 1750329397),
 ('admin@smartpowerph.com|172.18.0.1', 'i:1;', 1764653382),
@@ -226,7 +203,7 @@ INSERT INTO `locations` (`id`, `location_code`, `location_name`, `pid`, `created
 (18, 'IIDA Office', 'IIDA Office', '11', '2025-03-02 01:32:49', '2025-03-02 01:32:49', NULL),
 (19, 'Canteen', 'Canteen', '12', NULL, NULL, NULL),
 (20, 'General Office', 'General Office', '12', NULL, NULL, NULL),
-(21, 'SMT Area', 'SMT Area', '13', NULL, NULL, NULL),
+(21, 'SMT Area', 'SMT Area', '14', NULL, '2025-12-10 20:06:59', NULL),
 (22, 'A1 reflow', 'A1 reflow', '25', NULL, '2025-03-23 18:50:54', '2025-03-23 18:50:54'),
 (23, 'B5 reflow', 'B5 reflow', '21', NULL, '2025-03-23 18:51:04', '2025-03-23 18:51:04'),
 (24, 'EOL', 'EOL', '14', NULL, '2025-03-22 10:29:04', NULL),
@@ -303,20 +280,20 @@ INSERT INTO `sensors` (`id`, `slave_address`, `description`, `location_id`, `gat
 (2, '3', 'IIDA PP-200V', 17, 1, 1, '2025-03-20 22:33:12', '2025-03-20 22:37:24', NULL),
 (3, '1', 'IIDA PP-220V', 17, 1, 1, '2025-03-20 22:33:31', '2025-03-20 22:37:32', NULL),
 (4, '6', 'IIDA PP-HDA-AP', 17, 1, 1, '2025-03-20 22:33:52', '2025-03-20 22:37:40', NULL),
-(5, '4', 'PP-CANTEEN', 19, 2, 1, '2025-03-20 22:37:03', '2025-03-20 22:37:03', NULL),
-(6, '5', 'PP-GED/BPO', 19, 2, 1, '2025-03-20 22:38:00', '2025-05-26 11:22:42', NULL),
-(7, '7', 'PP-GenOffice', 19, 2, 1, '2025-03-20 22:38:20', '2025-05-26 11:21:39', NULL),
+(5, '4', 'PP-CANTEEN', 12, 2, 1, '2025-03-20 22:37:03', '2025-12-10 20:04:09', NULL),
+(6, '5', 'PP-GED/BPO', 12, 2, 1, '2025-03-20 22:38:00', '2025-12-10 20:04:25', NULL),
+(7, '7', 'PP-GenOffice', 12, 2, 1, '2025-03-20 22:38:20', '2025-12-10 20:05:17', NULL),
 (8, '9', 'EOL MP-100V-2-3', 24, 3, 1, '2025-03-20 22:39:35', '2025-03-22 15:21:55', NULL),
 (9, '8', 'EOL MP-2-3', 24, 3, 1, '2025-03-20 22:39:54', '2025-03-22 15:20:43', NULL),
-(10, '10', 'SWS Reflow A4', 25, 4, 2, '2025-03-20 22:40:45', '2025-03-23 21:22:20', NULL),
-(11, '11', 'B2 Reflow', 25, 4, 2, '2025-03-20 22:41:28', '2025-05-18 10:32:57', NULL),
-(12, '12', 'A1 Reflow', 25, 4, 1, '2025-03-20 22:41:48', '2025-03-23 21:22:44', NULL),
+(10, '10', 'SWS Reflow A4', 21, 4, 2, '2025-03-20 22:40:45', '2025-12-10 20:06:00', NULL),
+(11, '11', 'B2 Reflow', 21, 4, 2, '2025-03-20 22:41:28', '2025-12-10 20:07:54', NULL),
+(12, '12', 'A1 Reflow', 21, 4, 1, '2025-03-20 22:41:48', '2025-12-10 20:06:24', NULL),
 (13, '13', 'A2 Reflow', 21, 5, 1, '2025-03-20 22:42:04', '2025-03-26 18:32:13', NULL),
 (14, '14', 'A3 Reflow', 21, 5, 1, '2025-03-20 22:42:22', '2025-03-26 18:32:40', NULL),
 (15, '20', 'MDP', 26, 6, 1, '2025-04-30 17:12:36', '2025-04-30 17:12:36', NULL),
-(16, '30', 'CB1000 - TX1', 25, 4, 3, '2025-11-26 21:33:11', '2025-11-28 14:29:13', NULL),
-(17, '31', 'CB1000 - TX2', 25, 4, 3, '2025-11-26 21:33:39', '2025-11-28 14:29:29', NULL),
-(18, '32', 'CB2000 - TX3', 25, 4, 3, '2025-11-26 21:34:08', '2025-11-28 14:29:38', NULL),
+(16, '30', 'CB1000 - TX1', 7, 4, 3, '2025-11-26 21:33:11', '2025-12-10 20:09:02', NULL),
+(17, '31', 'CB1000 - TX2', 7, 4, 3, '2025-11-26 21:33:39', '2025-12-10 20:09:19', NULL),
+(18, '32', 'CB2000 - TX3', 7, 4, 3, '2025-11-26 21:34:08', '2025-12-10 20:09:32', NULL),
 (19, '33', 'MDP-2', 8, 7, 3, '2025-11-26 22:09:52', '2025-11-28 14:27:00', NULL);
 
 -- --------------------------------------------------------
@@ -353,8 +330,6 @@ CREATE TABLE `sensor_logs` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `sensor_models`
@@ -394,6 +369,42 @@ CREATE TABLE `sensor_offlines` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `gateway_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sensor_offlines`
+--
+
+INSERT INTO `sensor_offlines` (`id`, `query`, `created_at`, `updated_at`, `deleted_at`, `gateway_id`) VALUES
+(206, 'insert into `sensors` (`slave_address`, `location_id`, `gateway_id`, `sensor_model_id`, `description`, `updated_at`, `created_at`) values (33, 8, 7, 1, \'MDP-2\', \'2025-11-26 22:09:52\', \'2025-11-26 22:09:52\')', '2025-11-26 22:09:52', '2025-11-26 22:09:52', NULL, 1),
+(207, 'insert into `sensors` (`slave_address`, `location_id`, `gateway_id`, `sensor_model_id`, `description`, `updated_at`, `created_at`) values (33, 8, 7, 1, \'MDP-2\', \'2025-11-26 22:09:52\', \'2025-11-26 22:09:52\')', '2025-11-26 22:09:52', '2025-11-26 22:09:52', NULL, 2),
+(208, 'insert into `sensors` (`slave_address`, `location_id`, `gateway_id`, `sensor_model_id`, `description`, `updated_at`, `created_at`) values (33, 8, 7, 1, \'MDP-2\', \'2025-11-26 22:09:52\', \'2025-11-26 22:09:52\')', '2025-11-26 22:09:52', '2025-11-26 22:09:52', NULL, 3),
+(209, 'insert into `sensors` (`slave_address`, `location_id`, `gateway_id`, `sensor_model_id`, `description`, `updated_at`, `created_at`) values (33, 8, 7, 1, \'MDP-2\', \'2025-11-26 22:09:52\', \'2025-11-26 22:09:52\')', '2025-11-26 22:09:52', '2025-11-26 22:09:52', NULL, 4),
+(210, 'insert into `sensors` (`slave_address`, `location_id`, `gateway_id`, `sensor_model_id`, `description`, `updated_at`, `created_at`) values (33, 8, 7, 1, \'MDP-2\', \'2025-11-26 22:09:52\', \'2025-11-26 22:09:52\')', '2025-11-26 22:09:52', '2025-11-26 22:09:52', NULL, 5),
+(211, 'insert into `sensors` (`slave_address`, `location_id`, `gateway_id`, `sensor_model_id`, `description`, `updated_at`, `created_at`) values (33, 8, 7, 1, \'MDP-2\', \'2025-11-26 22:09:52\', \'2025-11-26 22:09:52\')', '2025-11-26 22:09:52', '2025-11-26 22:09:52', NULL, 6),
+(228, 'update `sensors` set `sensor_model_id` = 2, `sensors`.`updated_at` = \'2025-11-26 22:11:05\' where `id` = 18', '2025-11-26 22:11:05', '2025-11-26 22:11:05', NULL, 2),
+(229, 'update `sensors` set `sensor_model_id` = 2, `sensors`.`updated_at` = \'2025-11-26 22:11:05\' where `id` = 18', '2025-11-26 22:11:05', '2025-11-26 22:11:05', NULL, 3),
+(231, 'update `sensors` set `sensor_model_id` = 2, `sensors`.`updated_at` = \'2025-11-26 22:11:05\' where `id` = 18', '2025-11-26 22:11:05', '2025-11-26 22:11:05', NULL, 5),
+(241, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:27:00\' where `id` = 19', '2025-11-28 14:27:00', '2025-11-28 14:27:00', NULL, 1),
+(242, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:27:00\' where `id` = 19', '2025-11-28 14:27:00', '2025-11-28 14:27:00', NULL, 2),
+(243, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:27:00\' where `id` = 19', '2025-11-28 14:27:00', '2025-11-28 14:27:00', NULL, 3),
+(245, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:27:00\' where `id` = 19', '2025-11-28 14:27:00', '2025-11-28 14:27:00', NULL, 5),
+(246, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:27:00\' where `id` = 19', '2025-11-28 14:27:00', '2025-11-28 14:27:00', NULL, 6),
+(263, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:29:38\' where `id` = 18', '2025-11-28 14:29:38', '2025-11-28 14:29:38', NULL, 2),
+(264, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:29:38\' where `id` = 18', '2025-11-28 14:29:38', '2025-11-28 14:29:38', NULL, 3),
+(266, 'update `sensors` set `sensor_model_id` = 3, `sensors`.`updated_at` = \'2025-11-28 14:29:38\' where `id` = 18', '2025-11-28 14:29:38', '2025-11-28 14:29:38', NULL, 5),
+(269, 'update `sensors` set `location_id` = 12, `sensors`.`updated_at` = \'2025-12-10 20:04:09\' where `id` = 5', '2025-12-10 20:04:09', '2025-12-10 20:04:09', NULL, 1),
+(276, 'update `sensors` set `location_id` = 12, `sensors`.`updated_at` = \'2025-12-10 20:04:25\' where `id` = 6', '2025-12-10 20:04:25', '2025-12-10 20:04:25', NULL, 1),
+(283, 'update `sensors` set `location_id` = 12, `sensors`.`updated_at` = \'2025-12-10 20:05:17\' where `id` = 7', '2025-12-10 20:05:17', '2025-12-10 20:05:17', NULL, 1),
+(290, 'update `sensors` set `location_id` = 21, `sensors`.`updated_at` = \'2025-12-10 20:06:00\' where `id` = 10', '2025-12-10 20:06:00', '2025-12-10 20:06:00', NULL, 1),
+(297, 'update `sensors` set `location_id` = 21, `sensors`.`updated_at` = \'2025-12-10 20:06:24\' where `id` = 12', '2025-12-10 20:06:24', '2025-12-10 20:06:24', NULL, 1),
+(304, 'update `locations` set `pid` = 14, `locations`.`updated_at` = \'2025-12-10 20:06:59\' where `id` = 21', '2025-12-10 20:06:59', '2025-12-10 20:06:59', NULL, 1),
+(311, 'update `sensors` set `location_id` = 21, `sensors`.`updated_at` = \'2025-12-10 20:07:54\' where `id` = 11', '2025-12-10 20:07:54', '2025-12-10 20:07:54', NULL, 1),
+(318, 'update `sensors` set `location_id` = 7, `sensors`.`updated_at` = \'2025-12-10 20:09:02\' where `id` = 16', '2025-12-10 20:09:02', '2025-12-10 20:09:02', NULL, 1),
+(325, 'update `sensors` set `location_id` = 7, `sensors`.`updated_at` = \'2025-12-10 20:09:19\' where `id` = 17', '2025-12-10 20:09:19', '2025-12-10 20:09:19', NULL, 1),
+(332, 'update `sensors` set `location_id` = 7, `sensors`.`updated_at` = \'2025-12-10 20:09:32\' where `id` = 18', '2025-12-10 20:09:32', '2025-12-10 20:09:32', NULL, 1),
+(333, 'update `sensors` set `location_id` = 7, `sensors`.`updated_at` = \'2025-12-10 20:09:32\' where `id` = 18', '2025-12-10 20:09:32', '2025-12-10 20:09:32', NULL, 2),
+(334, 'update `sensors` set `location_id` = 7, `sensors`.`updated_at` = \'2025-12-10 20:09:32\' where `id` = 18', '2025-12-10 20:09:32', '2025-12-10 20:09:32', NULL, 3),
+(336, 'update `sensors` set `location_id` = 7, `sensors`.`updated_at` = \'2025-12-10 20:09:32\' where `id` = 18', '2025-12-10 20:09:32', '2025-12-10 20:09:32', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -443,20 +454,33 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('2k9vVBa0LohxtCUgGMtJCcwJfpsbVCg5MOx4Pawl', 1, '136.158.39.229', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMjlRRHRhZjY3ZTRrRG9xOTdScEkxVFl0eG1ZYVZIdUtuc3VFUlVPWCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL3NlbnNvcnMvMTgvZWRpdCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764673448),
-('DKBTuKeUanU5VP4UimiGe1zQagsOkZU5pWOdeExf', 2, '210.1.64.194', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoid3lHOWtpOW0yZTd3U2hxQzhObGM4NUpuNFJoZklnbkhwUDhzaHBnOCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozOToiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764676384),
-('eLRFMVWWrPgDWagSzDaUpXFyDKC9NeHZF4rJN4yj', 1, '180.190.111.117', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiR1ZxSHhIZEQyd2xEeU0zYTQ4T1NNOUI1M0JMd3ZYTWQyN0xROWdLTyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL3NlbnNvcnMiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1764676530),
-('JPGEXkGgv0qaedGVR5hHiLoIwx7ZdOlLdfp3BM6Z', 1, '172.18.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSVdyRTVGTHhhQjFhd0p1bldRdkIyRlhvRGRscTZZdkhDdENtUVdsVCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4Mi9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1764667773),
-('o0jVLATeoB6mSyVIJxL6TOvzchM6YnIWJaCUwGZR', NULL, '1.37.67.133', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWTQ2cG16bnhaVndmMEtYbjZWdnd6WGVINEpQZWhEdk5hSGJkdExleCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozOToiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vZGFzaGJvYXJkIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764662794),
-('rsRLtUyJc8JjW5lDtMdnB2sKqdupt8PG63EK3Hoj', NULL, '136.158.39.229', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.98 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicU02TE1SUWNRRVRxMVBWRG9Tc0FISGNuY1dQNnVCMHA4ejlnOXFjTCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764666520),
-('sLs1J3JdMNB9cvjFwNkLbzSCZuBDaLxXeSQRFZsZ', NULL, '2001:fd8:1a92:6512:e83f:9bae:572e:f935', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiR0NIY2lLZzZMMXdhMTJlRUhoSk51T0E0b3V6U2EweEhyTDFWb29pZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764666605),
-('swvP5Zb9kb8DDlULUNlM2JUPhjx7LCwfSVpFbcNR', 2, '210.1.64.194', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTU1NdGZuM1JycnliUUxZNFdjYkFoMHJ0ZGJucE5KMnBkYVM2ZTZSRCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0NzoiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vZW5lcmd5Q29uc3VtcHRpb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1764665731),
-('Th7Y7LJ606HKHturjsD7ycY5Vk1Rv8YYFLBHQUaK', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMVBwVEFTUlpLZVBVSmVUZXdBNzFuOW5FRDhRcXF1aWNvbmxXenN6ZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9lbmVyZ3lDb25zdW1wdGlvbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764661843),
-('TYrgpNi9XzXB7Y4UAsewN99iDkKRpI8bAdmf1qAK', 1, '136.158.39.229', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiV0NqWW95N0R4Q0Iyc1Z1V1duSnBNYWRQcXJ3M2pyMFRJMXM0YWs1OSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL3NlbnNvcnMvMTkvZWRpdCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1764676057),
-('uqjIOtywEtvF48gjntw5K3FVdq4NMynLrcAmTKVh', NULL, '119.94.165.133', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibjN4S1ZVNHROd3hpOGk0ZUtvTkZzcVhmVFU1V2pwM2NBeEF6U1plMiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764674145),
-('wFkXV3lyDypPCJ5flON0tvOOkkP2INemQUMcwfM8', 8, '112.199.110.203', 'Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZ0lNWVVUQVdlUDJXZkZudGtEUnk2dzNmbzV5NmNPZXFCTHZHSVRSTiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2FjdGl2ZVBvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6ODt9', 1764675368),
-('xCM0GJ1Pnd1FBEd6VU4qlVBEbkI4Pig65yjfy80R', NULL, '107.23.247.76', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMWZWMHNqOGpJemNoc205cEtoMmYyelhQQWdjZHZUYnlEUW55WG1OOSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHBzOi8vZGV2LXNpaXguc3BwaHBvcnRhbC5zaXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764669229),
-('Yi3NHsyOw40sHr2BkXwaudlXyEhRFBjLdygvmGaG', NULL, '107.23.247.76', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibnJYakd0aGRYYmlJNzhhVElaUmxxaHdCcTRCY05qVzNmRnpKQXVlcSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHBzOi8vZGV2LXNpaXguc3BwaHBvcnRhbC5zaXRlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1764669230);
+('6oR6zAZpHh13y9QWbutRSAy703417jzcLoER5Iid', NULL, '157.245.124.230', 'Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiV1dvekFyN2NHTzZNcU9CMEVuM1k3YkZXWWsxdVd3VHU5c3FOYXp4aCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765350777),
+('6ydaD8algThEO59bl9fph7zL5ImOgfS6AFTWe48o', 2, '61.245.23.170', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidGIwa0RtaUlJZWNuVGlsRmNWQWVyaFVxU0dYR3B0MXJLTXRvNGxoRyI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0NzoiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vZW5lcmd5Q29uc3VtcHRpb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1765329931),
+('9jmEEJRSTTZ6Kw5VoAGZiRrT2M7LFWFuFNjzJRl7', NULL, '34.139.108.176', 'Mozilla/5.0 (compatible; CMS-Checker/1.0; +https://example.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibzl1RndaQ3V0NkZucXVDVkdCZ211bVZHQmZJdGFMSlgzWW02NkxzbSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765296117),
+('COimvxCgzQVKBYXUwWP8JEbd4gNYXs51W3fMRFJq', NULL, '35.174.168.97', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYWpaNEF6dVd0Y0ZaNUtVcXo3UFhJTTdnZk5YUDRzVjJ3ZDJ0SHcwbSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765341645),
+('CVuIh4UqCMMVI6Fug2SgeOhKzZsj0WkSXD1MYpyB', NULL, '2a02:4780:11:c0de::e', 'Go-http-client/2.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSkxTWXhSclVYck1ya3lud3IySEJwWWtreWpCczd0TzQ1b3hIajNEciI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHBzOi8vZGV2LXNpaXguc3BwaHBvcnRhbC5zaXRlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765334449),
+('DKBTuKeUanU5VP4UimiGe1zQagsOkZU5pWOdeExf', 2, '112.199.110.203', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoid3lHOWtpOW0yZTd3U2hxQzhObGM4NUpuNFJoZklnbkhwUDhzaHBnOCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0MToiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vYWN0aXZlUG93ZXIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1765372107),
+('FFiW3RBptrpxOTLlu9IUEenScyK9hXx0qKqaBxj6', NULL, '35.174.168.97', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWTFIdmYyY2FFR3FyaUJybHhuY05OMWduOW13RjZmdmc3dGdSNVRsYSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765341646),
+('FJqttjEiX91cd1bBHbZFMtpxOlxAaDSyvALJR00b', 1, '136.158.39.33', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQkozV09sVkFQZ0g3N2hiT29LSXR2bVBRRDAyY0VDdWlRMWo5bGhNcyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDc6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvY2F0aW9uRGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1765372376),
+('fN6z7MKm6fR65l2hB1mMsQbundIq7y5Sxq4Psnu9', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRnNRcEcyT2tTVnVaeXBiYmFveG9nQzVSVTlrV0lOV21NeVN5UE1EeiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC91c2VyVHlwZUxvY2F0aW9ucyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1765370698),
+('fQ1mIHQEpssHpLogk3Yx2roRipxZYnR7c0f9gA3R', 9, '210.1.64.194', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieXM4NWFrUHJEMUQ0QnpBREZlczVMck1aWDE0WTdIV040MHVqeWpiZyI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6OTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozOToiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765358161),
+('gQDty9uXsjPlGfY3FUaAQejfqb9oMIQ6yr0LHHM9', NULL, '54.198.50.8', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiN1lBNVRuQkJuajB0Q0FGa0FDMUwzSEY4WU4zQ1h5dWdvcjl2VkFrZyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765287215),
+('hqc6pkkd9CXTrbv3ypFzBrGPuvwLivKARp4Q80YY', 8, '2001:4451:412d:2b00:dfa:c998:4747:7c41', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Safari/605.1.15', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoicjZLNG53VHFuYUdOOUFuajJVa29aTjZ4T1FVOGdvTzZrbFllb09GSSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM5OiJodHRwczovL3NpaXguc21hcnRwb3dlcnBoLmNvbS9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo4O30=', 1765337419),
+('j7rZK8d8atqYgKjuWs65xl5yOL1H5CaPgfHQgmTa', NULL, '2a02:4780:11:c0de::e', 'Go-http-client/2.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicDM0NVoyWDV5MnZYeDlZOVdSOTFiSWp5WmFhbnZpMWlnZXJoQUNNeiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHBzOi8vZGV2LXNpaXguc3BwaHBvcnRhbC5zaXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765334449),
+('JYbaBS6uIfEmFcuIhAbmfEZwdSaWHRhtzt1WEmDF', NULL, '34.139.108.176', 'Mozilla/5.0 (compatible; CMS-Checker/1.0; +https://example.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicUtmM0hRaTREUTRGTWpkTTZObTF5cEc3QTNyckJUM2M2bmZNbkxmWSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765296116),
+('KbRMNGC6XiK0QHd3H7t0hPWs9rYg3bdT8JtXo0vF', NULL, '216.73.216.55', 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiV0ZGb0FWd2ZTT3Z4UXlwdXR0dnJEbkRnOW04QWFqWFF5N2I5TlBXYSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2ZvcmdvdC1wYXNzd29yZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1765290094),
+('kC2yWJJ4UVBOn4DlXJ0QPk57vs4G86N2b9NcndGw', 1, '119.94.165.133', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiYlBTM0h3aFc5eHRMVnhuWElvOTNUbzJWVlc0Z1JvYjNFWFdTaFRINiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2FjdGl2ZVBvd2VyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1765370409),
+('lOnMVNAl8bAkjLAL9TSNRFDVNQDRJvJCtcmLJ9qW', NULL, '18.207.132.205', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoickJNZEVncnA3UHRjYmNBelFlRGFoT1dzMEF2SHlpRDNNOHVOSHVuZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765294449),
+('NuJKZ4pabXaXwa7YFXDx47i0wEJvprmxU3amXoLJ', NULL, '54.198.50.8', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibjVETUVVbHVKQ2plMm9aa0VITEIzM3g5VlQ1MTZVQ1Z0NVF2NXpNRCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765287214),
+('oxgl7FWzMKHDsPgFRBr1DKByUarlu91zIFbpAtUs', NULL, '98.92.69.211', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTXV4Q09pMW9lOEgzQ3BZV3ZHRkZqZWtKYzdwUnRZSkxqclpDNHpKWSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765287120),
+('qcn1Flt78IBVC6czerTpKQ3VHB8XZO8G8CMgwAvv', NULL, '13.57.26.121', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36 Assetnote/1.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMXZUYll6cVZSYlVnVDNUdDJLczdkTzUybXpjeVd0SWc1NWhrTDFJcyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765332061),
+('QP90e0JgzWEehPFh9sQqboDMvVE0jveW8lDGzUYE', NULL, '98.92.69.211', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibWp0cnhjc2s4bHBEZU1ENHU2SVg5QllLSkVBU3UzZWpKM2JFblJwNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765287121),
+('SRiOuEqXNY4zt9V11aCs136MSLCFKkvqrjXBXpzx', NULL, '52.90.75.170', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/138.0.7204.23 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicU9aVjVJS2hhVWFmTlpuaHRWaGpBQXJkTVJEcjdoOTNScTNZQXFPcSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765294497),
+('UBmKCzyhBSPw6RTlWKAWOW2isq5AUW5aXZmMsGY6', 1, '180.190.111.117', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicWxDbjNHcllsTlFZUXB1M0JSVkdCVjFjeWt2MjdYcTdPZlU5NkdZWiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0NzoiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vbG9jYXRpb25EYXNoYm9hcmQiO319', 1765372401),
+('uL0DNKCRaSw6Xt2e2odVsU7xjW2keBAZIDVYaE5L', NULL, '18.207.132.205', 'okhttp/5.3.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNzFQOVNNS3F3YWNGalNCaDB3REVTNFVjVjdqZ1k0TFBJODhlZnBmbiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765294450),
+('uW7ic82tzqV5bhIwnb9y7ZyPPh26amdTqhFqQSwn', NULL, '54.172.7.20', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/138.0.7204.23 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUWtLTzZJeVU1eG5mYWczdVpkd2ZldFF1Y09Obm1HaVZVZDJyQW9vNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765287154),
+('V9oSrWu2CygyZjOWMDkvct6x2Q02u82C3YDkgcjd', NULL, '216.73.216.55', 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiS29UOXZlQ3NOUmpPSnhnT3BHYng1dDFjc2ZPbk9HZk1pbnU2c01KQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHBzOi8vc2lpeC5zbWFydHBvd2VycGguY29tL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1765286701),
+('VncXx2nyAgHj52qsRNslBLNLFw5QTmxVtb4eX6mv', 2, '2405:8d40:4490:586e:187f:7cd2:333d:58da', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Mobile Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiUUpDR3NFdmJoQ2N6a005bk9ycE9lUWZUODZPa2Jic3RCekRnZnZDVCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0MToiaHR0cHM6Ly9zaWl4LnNtYXJ0cG93ZXJwaC5jb20vYWN0aXZlUG93ZXIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1765320015);
 
 -- --------------------------------------------------------
 
@@ -688,7 +712,7 @@ ALTER TABLE `sensors`
 -- AUTO_INCREMENT for table `sensor_logs`
 --
 ALTER TABLE `sensor_logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1045558;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1079350;
 
 --
 -- AUTO_INCREMENT for table `sensor_models`
@@ -700,7 +724,7 @@ ALTER TABLE `sensor_models`
 -- AUTO_INCREMENT for table `sensor_offlines`
 --
 ALTER TABLE `sensor_offlines`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=269;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=339;
 
 --
 -- AUTO_INCREMENT for table `sensor_types`
@@ -758,6 +782,3 @@ ALTER TABLE `sensor_offlines`
   ADD CONSTRAINT `sensor_offlines_gateway_id_foreign` FOREIGN KEY (`gateway_id`) REFERENCES `gateways` (`id`);
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
