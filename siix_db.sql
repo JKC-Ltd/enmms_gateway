@@ -1,5 +1,5 @@
 --
--- Table structure for table `cache`
+-- Tables structure for table `cache`
 --
 
 CREATE TABLE `cache` (
