@@ -24,12 +24,19 @@ client = ModbusSerialClient(
 
 
 # SYNCING DATA FROM CLOUD TO LOCAL
-if (db_connections.cloud_database()):
-    db_connections.sync(gateway_id)
+try:
+    if (db_connections.cloud_database()):
+        db_connections.sync(gateway_id)
+except Exception as e:
+    print(f"Sycn to Cloud Error: {e}")
 
 # SYNCING DATA FROM LOCAL TO CLOUD
-if (db_connections.local_database()):
-    db_connections.sync(gateway_id, False)
+try:
+    if (db_connections.local_database()):
+        db_connections.sync(gateway_id, False)
+except Exception as e:
+    print(f"Sycn to Local Error: {e}")
+
 
 # sys.exit()
 
