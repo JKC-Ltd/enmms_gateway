@@ -28,14 +28,16 @@ try:
     if (db_connections.cloud_database()):
         db_connections.sync(gateway_id)
 except Exception as e:
-    print(f"Sycn to Cloud Error: {e}")
+    print(f"SYNC DATA FROM CLOUD TO LOCAL")
+    print(f"Error: {e}")
 
 # SYNCING DATA FROM LOCAL TO CLOUD
 try:
     if (db_connections.local_database()):
         db_connections.sync(gateway_id, False)
 except Exception as e:
-    print(f"Sycn to Local Error: {e}")
+    print(f"SYNCING DATA FROM LOCAL TO CLOUD")
+    print(f"Error: {e}")
 
 
 # sys.exit()
