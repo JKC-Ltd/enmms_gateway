@@ -64,12 +64,12 @@ for meter_result in meter_results:
         if client.connect():
             try:
 
-                # if model_id == 1: # model_id = 1 = Schneider
-                #     response = client.read_holding_registers(address=int(register_address), count=2, slave=slave_address)
-                # else:
-
-                response = client.read_input_registers(address=int(
-                    register_address), count=2, slave=slave_address)
+                if model_id == 1:  # model_id = 1 = Schneider
+                    response = client.read_holding_registers(address=int(
+                        register_address), count=2, slave=slave_address)
+                else:
+                    response = client.read_input_registers(address=int(
+                        register_address), count=2, slave=slave_address)
 
                 # response = client.read_input_registers(address=0, count=2, slave=6)
                 if not response.isError():
