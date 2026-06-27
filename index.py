@@ -6,6 +6,8 @@ import time
 from datetime import datetime
 import sys
 
+#ssob charles
+
 date_now     = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 gateway_id   = gateway_config.gateway_id
