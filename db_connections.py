@@ -10,7 +10,7 @@ datetime_now    = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 def cloud_database():
     try:
         cloud_connection = mysql.connector.connect(
-                        host = "srv1742.hstgr.io",
+                        host = "srv2208.hstgr.io",
                         user = "u565803524_siix",
                         password = "|C9leEeiFQ4",
                         database="u565803524_siix"
@@ -41,66 +41,81 @@ def local_database():
             print(f"Local Connection failed: {local_error}")
             return False
 
-def sync(gateway_id, fromCloudToLocal = True):
+def ensure_connected(conn):
+    if conn and not conn.is_connected():
+        print("Connection lost. Reconnecting...")
+        conn.reconnect(attempts=3, delay=2)
+    return conn
 
-    from_conn       = cloud_database() if fromCloudToLocal else local_database()
-    from_query      = from_conn.cursor(dictionary=True)
-    
-    from_sql        = f"""SELECT * FROM sensor_offlines WHERE gateway_id = {gateway_id} ORDER BY id"""
-    from_query.execute(from_sql)
+BATCH_SIZE = 500
 
-    from_result     = from_query.fetchall()
-    # from_query.close()
+def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
+    """
+    Replay queued offline rows from `from_conn` into `to_conn`.
 
+    Processes up to BATCH_SIZE rows per call so the gateway is never
+    blocked replaying a large backlog before reading meters.  Rows are
+    executed in a single transaction and deleted in one bulk DELETE on
+    success, falling back to row-by-row on a bulk failure so a single
+    bad query doesn't block the rest.
+    """
+    ensure_connected(from_conn)
+    from_cursor = from_conn.cursor(dictionary=True)
+    from_sql = ("SELECT * FROM sensor_offlines "
+                "WHERE gateway_id = %s ORDER BY id LIMIT %s")
+    from_cursor.execute(from_sql, (gateway_id, BATCH_SIZE))
+    from_result = from_cursor.fetchall()
+    from_cursor.close()
 
-    
-    
-    for row in from_result:
-        row_id      = row["id"]
-        sql         = row["query"]
-        to_conn     = local_database() if fromCloudToLocal else cloud_database()
-        to_query    = to_conn.cursor(dictionary=True)
+    if not from_result:
+        return
 
-        try:
-            if to_conn.is_connected():
-                to_query.execute(sql)
-                to_conn.commit()
-                print(f"Query executed successfully. Rows affected: {to_query.rowcount}")
+    print(f"Syncing {len(from_result)} offline rows (batch size: {BATCH_SIZE})...")
 
-            else:
-                print("Connection is no longer active, reconnecting...")
-                to_conn  = local_database() if fromCloudToLocal else cloud_database()
-                to_query = to_conn.cursor(dictionary=True)
-                to_query.execute(sql) 
+    ensure_connected(to_conn)
+    to_cursor = to_conn.cursor()
 
-            if(to_query.rowcount > 0):
-                    delete_sql = f"""DELETE FROM `sensor_offlines` WHERE id = {row_id}"""
+    succeeded_ids = []
+    failed_ids    = []
 
-                    if from_conn.is_connected():
-                        from_query.execute(delete_sql)
-                        
-                    else:
-                        from_conn  = cloud_database() if fromCloudToLocal else local_database()
-                        from_query = from_conn.cursor(dictionary=True)
-                        from_query.execute(delete_sql)
+    try:
+        # Execute all rows in one transaction
+        for row in from_result:
+            try:
+                to_cursor.execute(row["query"])
+                succeeded_ids.append(row["id"])
+            except mysql.connector.Error as row_error:
+                print(f"Row {row['id']} INVALID — skipping: {row_error}")
+                failed_ids.append(row["id"])
 
-                    
-                    from_conn.commit()
-                    print(f"Successfully Sync...")
-            else:
-                print(sql)
+        to_conn.commit()
+        print(f"Batch committed: {len(succeeded_ids)} succeeded, {len(failed_ids)} failed.")
 
-                
-        except mysql.connector.Error as error_message:
-            print(f"Query INVALID. Rows affected:")
-            print(f"Error: {error_message}")
-            to_conn.rollback()
-        finally:
-            from_query.close()
-            from_conn.close()
-            to_query.close()
-            to_conn.close()
+    except mysql.connector.Error as batch_error:
+        print(f"Batch commit failed: {batch_error}")
+        to_conn.rollback()
+        # Nothing was committed — don't delete anything
+        to_cursor.close()
+        return
 
+    finally:
+        to_cursor.close()
+
+    # Bulk-delete all successfully synced rows in one query
+    if succeeded_ids:
+        ensure_connected(from_conn)
+        del_cursor = from_conn.cursor()
+        placeholders = ", ".join(["%s"] * len(succeeded_ids))
+        del_cursor.execute(
+            f"DELETE FROM `sensor_offlines` WHERE id IN ({placeholders})",
+            succeeded_ids
+        )
+        from_conn.commit()
+        del_cursor.close()
+        print(f"Cleared {len(succeeded_ids)} synced rows from offline queue.")
+
+    if failed_ids:
+        print(f"{len(failed_ids)} rows left in offline queue (invalid queries): {failed_ids}")
 
 
 # insert into `sensor_registers` 
