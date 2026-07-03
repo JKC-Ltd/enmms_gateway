@@ -48,7 +48,7 @@ try:
         # ----------------------------------------------------------
         # Reconnect Database if Needed
         # ----------------------------------------------------------
-        if cloud_conn:
+        if cloud_conn and cloud_conn.is_connected:
             print("Nag True sa Connection...")
             cloud_conn = db_connections.ensure_connected(cloud_conn)
         else:
@@ -60,10 +60,6 @@ try:
             local_conn = db_connections.ensure_connected(local_conn)
         else:
             local_conn = db_connections.local_database() or None
-
-        print("------------------INDEX------------------")
-        print(f"Cloud_Conn:{cloud_conn}")
-        print(f"Local_Conn:{local_conn}")
         # ----------------------------------------------------------
         # Synchronize Database
         # ----------------------------------------------------------
