@@ -43,6 +43,7 @@ try:
         if db_connections.check_connection(cloud_conn):
             print("Cloud database connection is active.")
         else:
+            print("Cloud Inactive.")
             cloud_conn = False
         # ----------------------------------------------------------
         # Current Timestamp

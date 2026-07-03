@@ -147,7 +147,11 @@ def check_connection(conn):
         return False
 
     try:
-        conn.ping(reconnect=False)
-        return True
-    except:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
+        cursor.fetchone()
+        cursor.close()
+        return conn
+
+    except Exception:
         return False
