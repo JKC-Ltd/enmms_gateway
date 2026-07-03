@@ -143,14 +143,16 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
 
 
 def check_connection(conn):
+    returnData = False
     try:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
         cursor.fetchone()
         cursor.close()
         print("Cloud Active.ss")
-        return conn
+        returnData = True
+        return returnData
 
     except Exception:
         print("Cloud Inactive.sss")
-        return False
+        return returnData
