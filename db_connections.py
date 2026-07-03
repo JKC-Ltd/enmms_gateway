@@ -47,22 +47,13 @@ def local_database():
         return False
 
 
-# def ensure_connected(conn):
-#     if conn and not conn.is_connected():
-#         print("Connection lost. Reconnecting...")
-#         conn.reconnect(attempts=3, delay=2)
-#     return conn
-
 def ensure_connected(conn):
-    if conn and not conn.is_connected():
-        print("Connection lost. Reconnecting...")
-        try:
-            conn.reconnect(attempts=3, delay=2)
-        except Exception as e:
-            print(f"Reconnect failed: {e}")
-            return None
-
-    return conn if conn and conn.is_connected() else None
+    try:
+        conn.ping(reconnect=True, attempts=3, delay=2)
+        return conn
+    except Exception as e:
+        print(f"Database unavailable: {e}")
+        return None
 
 
 BATCH_SIZE = 500
