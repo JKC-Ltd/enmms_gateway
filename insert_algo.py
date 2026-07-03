@@ -38,8 +38,6 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
                 local_cursor = local_conn.cursor()
                 materialized_sql = sql % values
                 offline_sql = "INSERT INTO sensor_offlines (query, gateway_id) VALUES (%s, %s)"
-                print(offline_sql)
-                sys.exit()
                 local_cursor.execute(
                     offline_sql, (materialized_sql, gateway_id))
                 local_conn.commit()

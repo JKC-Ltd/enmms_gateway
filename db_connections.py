@@ -122,6 +122,8 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
         # Execute all rows in one transaction
         for row in from_result:
             try:
+                print(row["query"])
+                sys.exit()
                 to_cursor.execute(row["query"])
                 succeeded_ids.append(row["id"])
             except mysql.connector.Error as row_error:
