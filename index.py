@@ -91,6 +91,7 @@ try:
             db_connections.sync(gateway_id)
         else:
             print("Cloud unavailable. Running in offline mode.")
+            cloud_conn = None
 
         # ----------------------------------------------------------
         # Reconnect Database if Needed
