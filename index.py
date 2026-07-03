@@ -129,7 +129,7 @@ try:
                         response = client.read_input_registers(
                             address=int(register_address),
                             count=2,
-                            slave=slave_address
+                            device_id=slave_address
                         )
 
                     if response.isError():
