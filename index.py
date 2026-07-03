@@ -52,32 +52,30 @@ try:
         # ----------------------------------------------------------
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # try:
-        #     cursor = cloud_conn.cursor()
-        #     cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
-        #     cursor.fetchone()
-        #     cursor.close()
-        #     print("Cloud Active.ss")
-        # except mysql.connector.Error as error_message:
-        #     print(f"Error: {error_message}")
-        #     print("Cloud Inactive.ss")
-        #     cloud_conn = False
+        try:
+            cursor = cloud_conn.cursor()
+            cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
+            cursor.fetchone()
+            cursor.close()
+            print("Cloud Active.ss")
+        except mysql.connector.Error as error_message:
+            print(f"Error: {error_message}")
+            print("Cloud Inactive.ss")
+            cloud_conn = False
 
-        cloud_conn = db_connections.ensure_connected(cloud_conn)
+        continue
 
-        if cloud_conn:
-            print(cloud_conn)
-        else:
-            print("Cloud unavailable. Running in offline mode.")
-            cloud_conn = None
+        # if cloud_conn:
+        #     print(cloud_conn)
+        # else:
+        #     print("Cloud unavailable. Running in offline mode.")
+        #     cloud_conn = None
 
         # ----------------------------------------------------------
         # Reconnect Database if Needed
         # ----------------------------------------------------------
-
+        cloud_conn = db_connections.ensure_connected(cloud_conn)
         local_conn = db_connections.ensure_connected(local_conn)
-
-        continue
 
         # ----------------------------------------------------------
         # Synchronize Database
