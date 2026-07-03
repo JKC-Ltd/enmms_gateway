@@ -151,7 +151,7 @@ try:
 
             meter_value_temp = tuple(map(float, meter_value_temp))
             datetime_created = date_now if cloud_conn else f"'{date_now}'"
-            meter_value_temp += (f"'{datetime_created}'",)
+            meter_value_temp += (datetime_created)
 
             meter_value = (
                 gateway_id,
