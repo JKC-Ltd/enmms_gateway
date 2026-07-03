@@ -16,9 +16,7 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
                        cloud_conn=None, local_conn=None):
     cloud_cursor = None
     local_cursor = None
-    print("------------------INSERT SENSOR LOGS------------------")
-    print(f"Cloud_Conn:{cloud_conn}")
-    print(f"Local_Conn:{local_conn}")
+
     try:
         column_parameter = ", ".join([col.strip()
                                      for col in column_parameter.split(',')])

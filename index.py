@@ -50,7 +50,9 @@ try:
         # ----------------------------------------------------------
         cloud_conn = db_connections.ensure_connected(cloud_conn)
         local_conn = db_connections.ensure_connected(local_conn)
-
+        print("------------------INDEX------------------")
+        print(f"Cloud_Conn:{cloud_conn}")
+        print(f"Local_Conn:{local_conn}")
         # ----------------------------------------------------------
         # Synchronize Database
         # ----------------------------------------------------------
