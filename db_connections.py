@@ -113,7 +113,7 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
 
     to_conn = ensure_connected(
         to_conn, "local" if fromCloudToLocal else "cloud")
-    to_cursor = to_conn.cursor()
+    to_cursor = to_conn.cursor(dictionary=True)
 
     succeeded_ids = []
     failed_ids = []
@@ -122,8 +122,6 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
         # Execute all rows in one transaction
         for row in from_result:
             try:
-                print(row["query"])
-                sys.exit()
                 to_cursor.execute(row["query"])
                 succeeded_ids.append(row["id"])
             except mysql.connector.Error as row_error:

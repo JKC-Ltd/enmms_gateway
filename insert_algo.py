@@ -25,7 +25,6 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
 
         try:
             cloud_conn = db_connections.ensure_connected(cloud_conn, "cloud")
-
             cloud_cursor = cloud_conn.cursor()
             cloud_cursor.execute(sql, values)
             cloud_conn.commit()
