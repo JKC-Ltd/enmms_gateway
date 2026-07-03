@@ -49,8 +49,10 @@ try:
         # Reconnect Database if Needed
         # ----------------------------------------------------------
         if cloud_conn:
+            print("Nag True sa Connection...")
             cloud_conn = db_connections.ensure_connected(cloud_conn)
         else:
+            print("FALSE Connection...")
             # Attempt to open a new cloud connection if previously None/False
             cloud_conn = db_connections.cloud_database() or None
 
