@@ -48,11 +48,19 @@ def local_database():
 
 
 def ensure_connected(conn):
+    if conn is None:
+        return None
+
     try:
         conn.ping(reconnect=True, attempts=3, delay=2)
-        # return conn
+        return conn
     except Exception as e:
         print(f"Database unavailable: {e}")
+        try:
+            conn.close()
+        except Exception:
+            pass
+
         return None
 
 

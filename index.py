@@ -85,13 +85,12 @@ try:
         #     print("Cloud Inactive.ss")
         #     cloud_conn = False
 
-        conn = get_cloud_connection()
-        if conn:
-            print("Cloud Active")
-            cloud_conn = db_connections.ensure_connected(cloud_conn)
+        cloud_conn = db_connections.ensure_connected(cloud_conn)
+
+        if cloud_conn:
+            db_connections.sync(gateway_id)
         else:
-            cloud_conn = False
-            print("Offline mode")
+            print("Cloud unavailable. Running in offline mode.")
 
         # ----------------------------------------------------------
         # Reconnect Database if Needed
