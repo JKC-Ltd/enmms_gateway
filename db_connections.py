@@ -25,8 +25,7 @@ def cloud_database():
             return False
 
     except Error as cloud_error:
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"Cloud database interupt at {current_time}")
+        print(f"Cloud database interupt at {datetime_now}")
         print(f"Cloud Connection failed: {cloud_error}")
         return False
 
@@ -43,8 +42,7 @@ def local_database():
             return local_database
 
     except Error as local_error:
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"Local database interupt at {current_time}")
+        print(f"Local database interupt at {datetime_now}")
         print(f"Local Connection failed: {local_error}")
         return False
 
@@ -55,32 +53,16 @@ def local_database():
 #         conn.reconnect(attempts=3, delay=2)
 #     return conn
 
-def ensure_connected(conn, database="cloud"):
-    try:
-        # No connection object
-        if not conn:
-            print(f"{database.capitalize()} connection missing. Reconnecting...")
-            return cloud_database() if database == "cloud" else local_database()
+def ensure_connected(conn):
+    if conn and not conn.is_connected():
+        print("Connection lost. Reconnecting...")
+        try:
+            conn.reconnect(attempts=3, delay=2)
+        except Exception as e:
+            print(f"Reconnect failed: {e}")
+            return None
 
-        # Existing object but disconnected
-        if not conn.is_connected():
-            print(f"{database.capitalize()} connection lost. Reconnecting...")
-
-            try:
-                conn.reconnect(attempts=3, delay=2)
-            except Exception:
-                conn.close()
-                conn = None
-
-        # Still dead after reconnect? Create a new connection.
-        if not conn or not conn.is_connected():
-            conn = cloud_database() if database == "cloud" else local_database()
-
-        return conn
-
-    except Exception as e:
-        print(f"Reconnect Error ({database}): {e}")
-        return cloud_database() if database == "cloud" else local_database()
+    return conn if conn and conn.is_connected() else None
 
 
 BATCH_SIZE = 500
@@ -96,8 +78,7 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
     success, falling back to row-by-row on a bulk failure so a single
     bad query doesn't block the rest.
     """
-    from_conn = ensure_connected(
-        from_conn, "cloud" if fromCloudToLocal else "local")
+    ensure_connected(from_conn)
     from_cursor = from_conn.cursor(dictionary=True)
     from_sql = ("SELECT * FROM sensor_offlines "
                 "WHERE gateway_id = %s ORDER BY id LIMIT %s")
@@ -111,9 +92,8 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
     print(
         f"Syncing {len(from_result)} offline rows (batch size: {BATCH_SIZE})...")
 
-    to_conn = ensure_connected(
-        to_conn, "local" if fromCloudToLocal else "cloud")
-    to_cursor = to_conn.cursor(dictionary=True)
+    ensure_connected(to_conn)
+    to_cursor = to_conn.cursor()
 
     succeeded_ids = []
     failed_ids = []
