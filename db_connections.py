@@ -53,7 +53,7 @@ def ensure_connected(conn):
         return conn
     except Exception as e:
         print(f"Database unavailable: {e}")
-        return None
+        return False
 
 
 BATCH_SIZE = 500
@@ -140,3 +140,14 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
 # `sensor_reg_address` = VALUES(`sensor_reg_address`),
 # `updated_at` = VALUES(`updated_at`),
 # `created_at` = VALUES(`created_at`)
+
+
+def check_connection(conn):
+    if conn is None:
+        return False
+
+    try:
+        conn.ping(reconnect=False)
+        return True
+    except:
+        return False

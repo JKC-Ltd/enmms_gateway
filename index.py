@@ -40,12 +40,10 @@ if not local_conn:
 try:
 
     while True:
-        try:
-            cloud_conn.ping(reconnect=True, attempts=3, delay=2)
-        except mysql.connector.Error:
-            cloud_conn = None
-
-        print("Continue Testings...")
+        if db_connections.check_connection(cloud_conn):
+            print("Cloud database connection is active.")
+        else:
+            cloud_conn = False
         # ----------------------------------------------------------
         # Current Timestamp
         # ----------------------------------------------------------
