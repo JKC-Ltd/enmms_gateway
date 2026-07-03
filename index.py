@@ -88,6 +88,7 @@ try:
         conn = get_cloud_connection()
         if conn:
             print("Cloud Active")
+            cloud_conn = db_connections.ensure_connected(cloud_conn)
         else:
             cloud_conn = False
             print("Offline mode")
@@ -95,11 +96,6 @@ try:
         # ----------------------------------------------------------
         # Reconnect Database if Needed
         # ----------------------------------------------------------
-        if cloud_conn and cloud_conn.is_connected:
-            cloud_conn = db_connections.ensure_connected(cloud_conn)
-        else:
-            # Attempt to open a new cloud connection if previously None/False
-            cloud_conn = db_connections.cloud_database() or None
 
         local_conn = db_connections.ensure_connected(local_conn)
 
