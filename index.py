@@ -84,7 +84,7 @@ try:
                 'sensor_model_id': 2,
                 'slave_address': 5,
                 'register_address': [200, 202, 204, 6, 8, 10, 52, 56, 342],
-                'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'active_power', 'apparent_power', 'energy']}]
+                'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'real_power', 'apparent_power', 'energy']}]
 
         # ----------------------------------------------------------
         # Connect to Modbus ONLY ONCE
