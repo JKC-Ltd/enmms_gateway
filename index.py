@@ -40,15 +40,17 @@ if not local_conn:
 try:
 
     while True:
+
+        # ----------------------------------------------------------
+        # Current Timestamp
+        # ----------------------------------------------------------
+        date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         if db_connections.check_connection(cloud_conn):
             print("Cloud database connection is active.")
         else:
             print("Cloud Inactive.")
             cloud_conn = False
-        # ----------------------------------------------------------
-        # Current Timestamp
-        # ----------------------------------------------------------
-        date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # ----------------------------------------------------------
         # Reconnect Database if Needed
@@ -59,10 +61,10 @@ try:
             # Attempt to open a new cloud connection if previously None/False
             cloud_conn = db_connections.cloud_database() or None
 
-        if local_conn:
-            local_conn = db_connections.ensure_connected(local_conn)
-        else:
-            local_conn = db_connections.local_database() or None
+        local_conn = db_connections.ensure_connected(local_conn)
+
+        continue
+
         # ----------------------------------------------------------
         # Synchronize Database
         # ----------------------------------------------------------
