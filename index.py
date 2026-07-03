@@ -88,7 +88,7 @@ try:
         cloud_conn = db_connections.ensure_connected(cloud_conn)
 
         if cloud_conn:
-            db_connections.sync(gateway_id)
+            print(cloud_conn)
         else:
             print("Cloud unavailable. Running in offline mode.")
             cloud_conn = None
