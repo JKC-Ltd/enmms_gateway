@@ -50,10 +50,10 @@ def local_database():
 def ensure_connected(conn):
     try:
         conn.ping(reconnect=True, attempts=3, delay=2)
-        return conn
+        # return conn
     except Exception as e:
         print(f"Database unavailable: {e}")
-        return False
+        return None
 
 
 BATCH_SIZE = 500
