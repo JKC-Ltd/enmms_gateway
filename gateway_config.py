@@ -5,9 +5,39 @@ import time
 from datetime import datetime
 import sys
 
-# DECLARING ID's
+# ── Gateway Identity ──────────────────────────────────────────────────────────
 gateway_id      = 2
 gateway_code    = "GAT-02"
+
+# ── Company / Deployment ─────────────────────────────────────────────────────
+# COMPANY_CODE becomes the second segment in every MQTT topic:
+#   enmms/{COMPANY_CODE}/{gateway_code}/sensor/{sensor_id}
+COMPANY_CODE     = "siix"
+
+# "cloud"  — gateway publishes directly to a cloud MQTT broker (Mode A)
+# "local"  — gateway publishes to a local Mosquitto broker (Mode B/C)
+DEPLOYMENT_MODE  = "local"
+
+# ── MQTT Broker ───────────────────────────────────────────────────────────────
+MQTT_HOST        = "localhost"   # broker hostname or IP
+MQTT_PORT        = 1883
+MQTT_USER        = "enmms"       # set to None to disable authentication
+MQTT_PASSWORD    = "0smartpower0"            # fill with your broker password
+
+# ── Polling interval ─────────────────────────────────────────────────────────
+# Controls how often the gateway reads each meter.
+# Change freely — the MQTT + DB Writer architecture handles any value.
+#   300 = 5 minutes (current default)
+#    60 = 1 minute
+#    10 = 10 seconds
+#     1 = 1 second
+POLL_INTERVAL_SECONDS = 300
+
+# ── Migration safety flag ─────────────────────────────────────────────────────
+# True  → gateway still writes directly to cloud MySQL (Phase 2 safety net).
+# False → cloud writes go exclusively through the DB Writer service (Phase 3+).
+# Switch to False only after verifying the DB Writer is inserting correctly.
+CLOUD_DIRECT_WRITE = True
 
 
 def get_metter_ids(local_conn):
