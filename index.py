@@ -48,8 +48,17 @@ try:
         # ----------------------------------------------------------
         # Reconnect Database if Needed
         # ----------------------------------------------------------
-        cloud_conn = db_connections.ensure_connected(cloud_conn)
-        local_conn = db_connections.ensure_connected(local_conn)
+        if cloud_conn:
+            cloud_conn = db_connections.ensure_connected(cloud_conn)
+        else:
+            # Attempt to open a new cloud connection if previously None/False
+            cloud_conn = db_connections.cloud_database() or None
+
+        if local_conn:
+            local_conn = db_connections.ensure_connected(local_conn)
+        else:
+            local_conn = db_connections.local_database() or None
+
         print("------------------INDEX------------------")
         print(f"Cloud_Conn:{cloud_conn}")
         print(f"Local_Conn:{local_conn}")
@@ -57,7 +66,7 @@ try:
         # Synchronize Database
         # ----------------------------------------------------------
         try:
-            if cloud_conn:
+            if cloud_conn and local_conn:
                 db_connections.sync(
                     gateway_id,
                     from_conn=cloud_conn,
@@ -71,6 +80,11 @@ try:
                     to_conn=cloud_conn,
                     fromCloudToLocal=False
                 )
+            else:
+                if not cloud_conn:
+                    print("Cloud DB unavailable — skipping sync to cloud/local.")
+                if not local_conn:
+                    print("Local DB unavailable — skipping sync to local.")
 
         except Exception as e:
             print(f"Sync Error : {e}")
