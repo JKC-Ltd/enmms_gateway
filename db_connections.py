@@ -144,6 +144,7 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
 
 def check_connection(conn):
     returnData = False
+    print("Checking Cloud Connection...")
     try:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
