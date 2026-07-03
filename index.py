@@ -33,31 +33,9 @@ client = ModbusSerialClient(
 cloud_conn = None
 
 
-def get_cloud_connection():
-    global cloud_conn
-
-    if cloud_conn is None:
-        try:
-            cloud_conn = db_connections.cloud_database()
-        except Exception:
-            return None
-
-    try:
-        cloud_conn.ping(reconnect=True, attempts=2, delay=1)
-        return cloud_conn
-
-    except Exception:
-        try:
-            cloud_conn.close()
-        except:
-            pass
-
-        cloud_conn = None
-        return None
-
-# cloud_conn = db_connections.cloud_database()
-# if not cloud_conn:
-#     print("Cloud database unreachable. Running in offline mode.")
+cloud_conn = db_connections.cloud_database()
+if not cloud_conn:
+    print("Cloud database unreachable. Running in offline mode.")
 
 
 local_conn = db_connections.local_database()
