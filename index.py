@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 import sys
 import mysql.connector
+from mysql.connector import Error
 
 # ------------------------------------------------------------------
 # Gateway Information
@@ -28,9 +29,36 @@ client = ModbusSerialClient(
 # ------------------------------------------------------------------
 # Open Database Connections ONCE
 # ------------------------------------------------------------------
-cloud_conn = db_connections.cloud_database()
-if not cloud_conn:
-    print("Cloud database unreachable. Running in offline mode.")
+
+cloud_conn = None
+
+
+def get_cloud_connection():
+    global cloud_conn
+
+    if cloud_conn is None:
+        try:
+            cloud_conn = db_connections.cloud_database()
+        except Exception:
+            return None
+
+    try:
+        cloud_conn.ping(reconnect=True, attempts=2, delay=1)
+        return cloud_conn
+
+    except Exception:
+        try:
+            cloud_conn.close()
+        except:
+            pass
+
+        cloud_conn = None
+        return None
+
+# cloud_conn = db_connections.cloud_database()
+# if not cloud_conn:
+#     print("Cloud database unreachable. Running in offline mode.")
+
 
 local_conn = db_connections.local_database()
 if not local_conn:
@@ -46,16 +74,23 @@ try:
         # ----------------------------------------------------------
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        try:
-            cursor = cloud_conn.cursor()
-            cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
-            cursor.fetchone()
-            cursor.close()
-            print("Cloud Active.ss")
-        except mysql.connector.Error as error_message:
-            print(f"Error: {error_message}")
-            print("Cloud Inactive.ss")
+        # try:
+        #     cursor = cloud_conn.cursor()
+        #     cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
+        #     cursor.fetchone()
+        #     cursor.close()
+        #     print("Cloud Active.ss")
+        # except mysql.connector.Error as error_message:
+        #     print(f"Error: {error_message}")
+        #     print("Cloud Inactive.ss")
+        #     cloud_conn = False
+
+        conn = get_cloud_connection()
+        if conn:
+            print("Cloud Active")
+        else:
             cloud_conn = False
+            print("Offline mode")
 
         # ----------------------------------------------------------
         # Reconnect Database if Needed
