@@ -48,8 +48,8 @@ try:
         # ----------------------------------------------------------
         # Reconnect Database if Needed
         # ----------------------------------------------------------
-        cloud_conn = db_connections.ensure_connected(cloud_conn)
-        local_conn = db_connections.ensure_connected(local_conn)
+        cloud_conn = db_connections.ensure_connected(cloud_conn, "cloud")
+        local_conn = db_connections.ensure_connected(local_conn, "local")
 
         # ----------------------------------------------------------
         # Synchronize Database
