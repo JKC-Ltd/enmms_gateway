@@ -51,8 +51,9 @@ try:
         # Current Timestamp
         # ----------------------------------------------------------
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         try:
+            print(cloud_conn.cursor())
             cursor = cloud_conn.cursor()
             cursor.execute("SELECT * FROM sensor_logs LIMIT 1")
             cursor.fetchone()
@@ -63,6 +64,7 @@ try:
             print("Cloud Inactive.ss")
             cloud_conn = False
 
+        time.sleep(10)
         continue
 
         # if cloud_conn:
