@@ -5,6 +5,7 @@ import insert_algo
 import time
 from datetime import datetime
 import sys
+import mysql.connector
 
 # ------------------------------------------------------------------
 # Gateway Information
@@ -39,7 +40,12 @@ if not local_conn:
 try:
 
     while True:
-        print("Testing connections...")
+        try:
+            cloud_conn.ping(reconnect=True, attempts=3, delay=2)
+        except mysql.connector.Error:
+            cloud_conn = None
+
+        print("Continue Testings...")
         # ----------------------------------------------------------
         # Current Timestamp
         # ----------------------------------------------------------
@@ -49,10 +55,8 @@ try:
         # Reconnect Database if Needed
         # ----------------------------------------------------------
         if cloud_conn and cloud_conn.is_connected:
-            print("Nag True sa Connection...")
             cloud_conn = db_connections.ensure_connected(cloud_conn)
         else:
-            print("FALSE Connection...")
             # Attempt to open a new cloud connection if previously None/False
             cloud_conn = db_connections.cloud_database() or None
 

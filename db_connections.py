@@ -49,8 +49,6 @@ def local_database():
 
 def ensure_connected(conn):
     try:
-        print("Nag ensure yung connection...")
-        print(conn)
         conn.ping(reconnect=True, attempts=3, delay=2)
         return conn
     except Exception as e:
