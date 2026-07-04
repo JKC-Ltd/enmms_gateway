@@ -52,6 +52,7 @@ try:
         # ----------------------------------------------------------
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        cloud_conn = db_connections.ensure_connected(cloud_conn)
         try:
             print(cloud_conn.cursor())
             cursor = cloud_conn.cursor()
