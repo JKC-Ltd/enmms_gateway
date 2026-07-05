@@ -15,32 +15,50 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
                        cloud_conn=None, local_conn=None):
     cloud_cursor = None
     local_cursor = None
-    try:
-        column_parameter = ", ".join([col.strip() for col in column_parameter.split(',')])
-        placeholders = ", ".join(["%s"] * len(values))
-        sql = f"INSERT INTO sensor_logs ({column_parameter}) VALUES ({placeholders})"
 
-        if cloud_conn:
+    column_parameter = ", ".join([col.strip() for col in column_parameter.split(',')])
+    placeholders     = ", ".join(["%s"] * len(values))
+    sql              = f"INSERT INTO sensor_logs ({column_parameter}) VALUES ({placeholders})"
+
+    # --- Cloud insert ---
+    cloud_ok = False
+    if cloud_conn:
+        try:
             db_connections.ensure_connected(cloud_conn)
             cloud_cursor = cloud_conn.cursor()
             cloud_cursor.execute(sql, values)
             cloud_conn.commit()
             if cloud_cursor.rowcount > 0:
                 print("INSERTED TO CLOUD SUCCESSFULLY")
+                cloud_ok = True
             else:
                 print("FAILED TO INSERT INTO CLOUD")
+        except mysql.connector.Error as cloud_error:
+            print(f"Cloud insert failed: {cloud_error}")
+            try:
+                cloud_conn.rollback()
+            except Exception:
+                pass
+        finally:
+            if cloud_cursor:
+                cloud_cursor.close()
+                cloud_cursor = None
 
-        if not cloud_conn:
-            # Cloud unavailable — queue for deferred sync
-            db_connections.ensure_connected(local_conn)
-            local_cursor = local_conn.cursor()
-            materialized_sql = sql % values
+    # --- Local insert or offline queue ---
+    try:
+        db_connections.ensure_connected(local_conn)
+        local_cursor = local_conn.cursor()
+
+        if not cloud_ok:
+            # Cloud unavailable or failed — queue for deferred sync
+            materialized_sql = sql % tuple(
+                f"'{v}'" if isinstance(v, str) else str(v) for v in values
+            )
             offline_sql = "INSERT INTO sensor_offlines (query, gateway_id) VALUES (%s, %s)"
             local_cursor.execute(offline_sql, (materialized_sql, gateway_id))
             local_conn.commit()
+            print("Cloud unavailable — queued to sensor_offlines")
         else:
-            db_connections.ensure_connected(local_conn)
-            local_cursor = local_conn.cursor()
             local_cursor.execute(sql, values)
             local_conn.commit()
             if local_cursor.rowcount > 0:
@@ -48,11 +66,12 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
             else:
                 print("FAILED TO INSERT INTO LOCAL")
 
-    except mysql.connector.Error as error_message:
-        print(f"Error: {error_message}")
-        local_conn.rollback()
+    except mysql.connector.Error as local_error:
+        print(f"Local insert failed: {local_error}")
+        try:
+            local_conn.rollback()
+        except Exception:
+            pass
     finally:
-        if cloud_cursor:
-            cloud_cursor.close()
         if local_cursor:
             local_cursor.close()
