@@ -8,9 +8,9 @@ import sys
 datetime_now    = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 CLOUD_HOST     = "srv2208.hstgr.io"
-CLOUD_USER     = "u565803524_siix"
-CLOUD_PASSWORD = "|C9leEeiFQ4"
-CLOUD_DATABASE = "u565803524_siix"
+CLOUD_USER     = "u565803524_dev_uratex"
+CLOUD_PASSWORD = "m1&XJPSH"
+CLOUD_DATABASE = "u565803524_dev_uratex"
 
 def cloud_database():
     try:
@@ -36,7 +36,7 @@ def local_database():
         local_connection = mysql.connector.connect(
             host     = "localhost",
             user     = "root",
-            password = "0smartPower0",
+            password = "0smartpower0",
             database = "enmms",
         )
         if local_connection.is_connected():
