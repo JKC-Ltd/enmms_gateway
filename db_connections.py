@@ -17,7 +17,10 @@ def cloud_database():
             # database="u565803524_siix"
             user="u565803524_gateway_test",
             password="GatewayTest0123",
-            database="u565803524_gateway_test"
+            database="u565803524_gateway_test",
+            connection_timeout=5,   # give up connecting after 5 seconds
+            read_timeout=5,   # give up waiting for query response after 5 seconds
+            write_timeout=5,   # give up waiting to send data after 5 seconds
         )
         if cloud_connection.is_connected():
             return cloud_connection
