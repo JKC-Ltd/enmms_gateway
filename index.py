@@ -6,11 +6,7 @@ import time
 from datetime import datetime
 import sys
 
-gateway_id = gateway_config.gateway_id
-gateway_code = gateway_config.gateway_code
-
-# DECLARING MODBUS CLIENT
-client = ModbusSerialClient(
+MODBUS_SETUP = ModbusSerialClient(
     port='/dev/ttyUSB0',
     baudrate=9600,
     stopbits=1,
@@ -18,6 +14,14 @@ client = ModbusSerialClient(
     bytesize=8,
     timeout=2
 )
+
+# DECLARING MODBUS CLIENT
+client = MODBUS_SETUP
+
+# DECLARING ID's
+gateway_id = gateway_config.gateway_id
+gateway_code = gateway_config.gateway_code
+
 
 # Open connections once at startup — reused for the entire lifetime of the process
 cloud_conn = db_connections.cloud_database()
@@ -42,6 +46,15 @@ try:
             else:
                 print(
                     f"[{date_now}] Cloud still unreachable. Running in offline mode.")
+
+        if not client.connect():
+            print(f"[{date_now}] Attempting to reconnect to Modbus Client...")
+            client = MODBUS_SETUP
+            if client.connect():
+                print(f"[{date_now}] Modbus Client reconnected.")
+            else:
+                print(
+                    f"[{date_now}] Modbus Client still unreachable. Running in offline mode.")
 
         try:
             # Sync offline queue before polling meters
