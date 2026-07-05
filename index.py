@@ -33,14 +33,18 @@ try:
     while True:
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Retry cloud connection if it was never established or fully dropped
+        # Retry cloud connection if it was never established or dropped
         if not cloud_conn:
+            print(f"[{date_now}] Attempting to reconnect to cloud database...")
             cloud_conn = db_connections.cloud_database()
             if cloud_conn:
-                print(f"Cloud connection re-established at {date_now}")
+                print(f"[{date_now}] Cloud connection re-established.")
+            else:
+                print(f"[{date_now}] Cloud still unreachable. Running in offline mode.")
 
         try:
             # Sync offline queue before polling meters
+            # Pass cloud_conn by reference — sync() handles None gracefully
             db_connections.sync(gateway_id, from_conn=cloud_conn, to_conn=local_conn, fromCloudToLocal=True)
             db_connections.sync(gateway_id, from_conn=local_conn, to_conn=cloud_conn, fromCloudToLocal=False)
 
@@ -85,17 +89,22 @@ try:
                 meter_value_temp = meter_value_temp + (date_now,)
                 meter_value      = (gateway_id, meter_id) + meter_value_temp
 
-                insert_algo.insert_sensor_logs(
+                # insert_sensor_logs returns True if cloud insert succeeded, False if it fell back to offline
+                cloud_ok = insert_algo.insert_sensor_logs(
                     meter_id, slave_address, column_parameter, meter_value,
                     cloud_conn=cloud_conn, local_conn=local_conn
                 )
+
+                # If cloud insert failed, mark cloud_conn as None so next cycle retries
+                if not cloud_ok:
+                    cloud_conn = None
 
         except Exception as e:
             print(f"[{date_now}] Cycle error: {e}")
             # Do not exit — log and continue to next cycle
 
-        print(f"[{date_now}] Cycle complete. Sleeping 5 minutes...")
-        time.sleep(300)
+        print(f"[{date_now}] Cycle complete. Sleeping...")
+        time.sleep(10)
 
 finally:
     # Reached only on KeyboardInterrupt or fatal crash

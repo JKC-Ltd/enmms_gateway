@@ -13,6 +13,13 @@ gateway_code = gateway_config.gateway_code
 
 def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
                        cloud_conn=None, local_conn=None):
+    """
+    Insert a sensor reading into cloud and local databases.
+
+    Returns True if cloud insert succeeded, False if it failed or was unavailable.
+    The caller (index.py) uses this return value to reset cloud_conn to None
+    so the next cycle attempts to reconnect.
+    """
     cloud_cursor = None
     local_cursor = None
 
@@ -75,3 +82,5 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
     finally:
         if local_cursor:
             local_cursor.close()
+
+    return cloud_ok
