@@ -6,7 +6,7 @@ import time
 from datetime import datetime
 import sys
 
-gateway_id   = gateway_config.gateway_id
+gateway_id = gateway_config.gateway_id
 gateway_code = gateway_config.gateway_code
 
 # DECLARING MODBUS CLIENT
@@ -40,25 +40,36 @@ try:
             if cloud_conn:
                 print(f"[{date_now}] Cloud connection re-established.")
             else:
-                print(f"[{date_now}] Cloud still unreachable. Running in offline mode.")
+                print(
+                    f"[{date_now}] Cloud still unreachable. Running in offline mode.")
 
         try:
             # Sync offline queue before polling meters
             # Pass cloud_conn by reference — sync() handles None gracefully
-            db_connections.sync(gateway_id, from_conn=cloud_conn, to_conn=local_conn, fromCloudToLocal=True)
-            db_connections.sync(gateway_id, from_conn=local_conn, to_conn=cloud_conn, fromCloudToLocal=False)
+            db_connections.sync(gateway_id, from_conn=cloud_conn,
+                                to_conn=local_conn, fromCloudToLocal=True)
+            db_connections.sync(gateway_id, from_conn=local_conn,
+                                to_conn=cloud_conn, fromCloudToLocal=False)
 
             # Fetch meter configuration (uses the already-open local connection)
-            meter_results = gateway_config.get_metter_ids(local_conn)
+            # meter_results = gateway_config.get_metter_ids(local_conn)
+            meter_results = [
+                {
+                    'id': 1,
+                    'sensor_model_id': 2,
+                    'slave_address': 5,
+                    'register_address': [200, 202, 204, 6, 8, 10, 52, 56, 342],
+                    'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'real_power', 'apparent_power', 'energy']}]
 
             for meter_result in meter_results:
-                model_id           = meter_result['sensor_model_id']
-                meter_id           = meter_result['id']
-                slave_address      = int(meter_result['slave_address'])
-                columns            = ["gateway_id", "sensor_id"] + meter_result['parameter'] + ['datetime_created']
+                model_id = meter_result['sensor_model_id']
+                meter_id = meter_result['id']
+                slave_address = int(meter_result['slave_address'])
+                columns = ["gateway_id", "sensor_id"] + \
+                    meter_result['parameter'] + ['datetime_created']
                 register_addresses = meter_result['register_address']
-                column_parameter   = ', '.join(columns)
-                meter_value_temp   = ()
+                column_parameter = ', '.join(columns)
+                meter_value_temp = ()
 
                 # Connect once per meter (not once per register)
                 if client.connect():
@@ -69,10 +80,11 @@ try:
                             )
 
                             if not response.isError():
-                                sensor_value     = float("%.2f" % client.convert_from_registers(
+                                sensor_value = float("%.2f" % client.convert_from_registers(
                                     response.registers, data_type=client.DATATYPE.FLOAT32
                                 ))
-                                meter_value_temp = meter_value_temp + (sensor_value,)
+                                meter_value_temp = meter_value_temp + \
+                                    (sensor_value,)
                             else:
                                 print("Error Reading Register")
                     finally:
@@ -82,7 +94,7 @@ try:
 
                 meter_value_temp = tuple(map(float, meter_value_temp))
                 meter_value_temp = meter_value_temp + (date_now,)
-                meter_value      = (gateway_id, meter_id) + meter_value_temp
+                meter_value = (gateway_id, meter_id) + meter_value_temp
 
                 # insert_sensor_logs returns True if cloud insert succeeded, False if it fell back to offline
                 cloud_ok = insert_algo.insert_sensor_logs(
