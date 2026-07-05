@@ -55,7 +55,6 @@ def ensure_connected(conn):
         return None
 
     try:
-        print("Ensure Conenctiong")
         conn.ping(reconnect=True, attempts=3, delay=2)
         return conn
     except Exception as e:
