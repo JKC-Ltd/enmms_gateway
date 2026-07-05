@@ -1,0 +1,14 @@
+[Unit]
+Description=ENMMS Gateway Service
+After=network.target
+
+[Service]
+ExecStart=/bin/bash -c 'source /home/ryan/jarvis/bin/activate && python3 /home/ryan/code/enmms_gateway/index.py'
+WorkingDirectory=/home/ryan/code/enmms_gateway
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
