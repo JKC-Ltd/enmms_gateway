@@ -55,7 +55,7 @@ try:
             else:
                 print(
                     f"[{date_now}] Modbus Client still unreachable. Cannot read meters.")
-                time.sleep(10)
+                time.sleep(5)
                 continue  # Skip this cycle and retry next time
 
         try:
@@ -67,14 +67,14 @@ try:
                                 to_conn=cloud_conn, fromCloudToLocal=False)
 
             # Fetch meter configuration (uses the already-open local connection)
-            meter_results = gateway_config.get_metter_ids(local_conn)
-            # meter_results = [
-            #     {
-            #         'id': 1,
-            #         'sensor_model_id': 2,
-            #         'slave_address': 5,
-            #         'register_address': [200, 202, 204, 6, 8, 10, 52, 56, 342],
-            #         'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'real_power', 'apparent_power', 'energy']}]
+            # meter_results = gateway_config.get_metter_ids(local_conn)
+            meter_results = [
+                {
+                    'id': 1,
+                    'sensor_model_id': 2,
+                    'slave_address': 5,
+                    'register_address': [200, 202, 204, 6, 8, 10, 52, 56, 342],
+                    'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'real_power', 'apparent_power', 'energy']}]
 
             for meter_result in meter_results:
                 model_id = meter_result['sensor_model_id']

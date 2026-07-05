@@ -1,27 +1,28 @@
 import mysql.connector
 from mysql.connector import Error
-import time 
+import time
 from datetime import datetime
 import sys
 
 
-datetime_now    = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+datetime_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-CLOUD_HOST     = "srv2208.hstgr.io"
-CLOUD_USER     = "u565803524_dev_uratex"
+CLOUD_HOST = "srv2208.hstgr.io"
+CLOUD_USER = "u565803524_dev_uratex"
 CLOUD_PASSWORD = "m1&XJPSH"
 CLOUD_DATABASE = "u565803524_dev_uratex"
+
 
 def cloud_database():
     try:
         cloud_connection = mysql.connector.connect(
-            host               = CLOUD_HOST,
-            user               = CLOUD_USER,
-            password           = CLOUD_PASSWORD,
-            database           = CLOUD_DATABASE,
-            connection_timeout = 5,   # give up connecting after 5 seconds
-            read_timeout       = 5,   # give up waiting for query response after 5 seconds
-            write_timeout      = 5,   # give up waiting to send data after 5 seconds
+            host=CLOUD_HOST,
+            user=CLOUD_USER,
+            password=CLOUD_PASSWORD,
+            database=CLOUD_DATABASE,
+            connection_timeout=5,   # give up connecting after 5 seconds
+            read_timeout=5,   # give up waiting for query response after 5 seconds
+            write_timeout=5,   # give up waiting to send data after 5 seconds
         )
         if cloud_connection.is_connected():
             return cloud_connection
@@ -33,13 +34,14 @@ def cloud_database():
         print(f"Cloud Connection failed: {cloud_error}")
         return None
 
+
 def local_database():
     try:
         local_connection = mysql.connector.connect(
-            host     = "localhost",
-            user     = "root",
-            password = "0smartpower0",
-            database = "uratex",
+            host="localhost",
+            user="root",
+            password="0SmartPower0",
+            database="uratex",
         )
         if local_connection.is_connected():
             return local_connection
@@ -48,6 +50,7 @@ def local_database():
         print(f"Local database interrupt at {datetime_now}")
         print(f"Local Connection failed: {local_error}")
         return None
+
 
 def ensure_connected(conn):
     """
@@ -64,7 +67,9 @@ def ensure_connected(conn):
         print("Connection lost and could not reconnect.")
         return None
 
+
 BATCH_SIZE = 500
+
 
 def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
     """
@@ -102,12 +107,13 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
         print("sync() skipped — destination connection unavailable.")
         return
 
-    print(f"Syncing {len(from_result)} offline rows (batch size: {BATCH_SIZE})...")
+    print(
+        f"Syncing {len(from_result)} offline rows (batch size: {BATCH_SIZE})...")
 
     to_cursor = to_conn.cursor()
 
     succeeded_ids = []
-    failed_ids    = []
+    failed_ids = []
 
     try:
         # Execute all rows in one transaction
@@ -120,7 +126,8 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
                 failed_ids.append(row["id"])
 
         to_conn.commit()
-        print(f"Batch committed: {len(succeeded_ids)} succeeded, {len(failed_ids)} failed.")
+        print(
+            f"Batch committed: {len(succeeded_ids)} succeeded, {len(failed_ids)} failed.")
 
     except Error as batch_error:
         print(f"Batch commit failed: {batch_error}")
@@ -146,20 +153,22 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
                 )
                 from_conn.commit()
                 del_cursor.close()
-                print(f"Cleared {len(succeeded_ids)} synced rows from offline queue.")
+                print(
+                    f"Cleared {len(succeeded_ids)} synced rows from offline queue.")
             except Error as del_error:
                 print(f"Failed to delete synced rows: {del_error}")
 
     if failed_ids:
-        print(f"{len(failed_ids)} rows left in offline queue (invalid queries): {failed_ids}")
+        print(
+            f"{len(failed_ids)} rows left in offline queue (invalid queries): {failed_ids}")
 
 
-# insert into `sensor_registers` 
-#     (`id`,`sensor_type_id`, `sensor_model_id`, `sensor_reg_address`, `updated_at`, `created_at`) 
-# values (1, 1, 1, '0, 6, 12, 18, 342', '2025-02-16 16:15:35', '2025-02-16 16:15:35') 
-# ON DUPLICATE KEY UPDATE 
-# `sensor_type_id` = VALUES(`sensor_type_id`), 
-# `sensor_model_id` = VALUES(`sensor_model_id`), 
-# `sensor_reg_address` = VALUES(`sensor_reg_address`), 
-# `updated_at` = VALUES(`updated_at`), 
+# insert into `sensor_registers`
+#     (`id`,`sensor_type_id`, `sensor_model_id`, `sensor_reg_address`, `updated_at`, `created_at`)
+# values (1, 1, 1, '0, 6, 12, 18, 342', '2025-02-16 16:15:35', '2025-02-16 16:15:35')
+# ON DUPLICATE KEY UPDATE
+# `sensor_type_id` = VALUES(`sensor_type_id`),
+# `sensor_model_id` = VALUES(`sensor_model_id`),
+# `sensor_reg_address` = VALUES(`sensor_reg_address`),
+# `updated_at` = VALUES(`updated_at`),
 # `created_at` = VALUES(`created_at`)
