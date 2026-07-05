@@ -54,7 +54,8 @@ try:
                 print(f"[{date_now}] Modbus Client reconnected.")
             else:
                 print(
-                    f"[{date_now}] Modbus Client still unreachable. Running in offline mode.")
+                    f"[{date_now}] Modbus Client still unreachable. Cannot read meters.")
+                time.sleep(10)
 
         try:
             # Sync offline queue before polling meters
