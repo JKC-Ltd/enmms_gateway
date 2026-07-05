@@ -42,9 +42,12 @@ def local_database():
             return False
 
 def ensure_connected(conn):
-    if conn and not conn.is_connected():
-        print("Connection lost. Reconnecting...")
-        conn.reconnect(attempts=3, delay=2)
+    if conn is None:
+        return conn
+    try:
+        conn.ping(reconnect=True, attempts=3, delay=2)
+    except mysql.connector.Error:
+        print("Connection lost and could not reconnect.")
     return conn
 
 BATCH_SIZE = 500
