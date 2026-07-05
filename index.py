@@ -56,6 +56,7 @@ try:
                 print(
                     f"[{date_now}] Modbus Client still unreachable. Cannot read meters.")
                 time.sleep(10)
+                continue  # Skip this cycle and retry next time
 
         try:
             # Sync offline queue before polling meters
