@@ -6,21 +6,7 @@ import time
 from datetime import datetime
 import sys
 
-# MODBUS_SETUP = ModbusSerialClient(
-#     port='/dev/ttyUSB0',
-#     baudrate=9600,
-#     stopbits=1,
-#     parity="N",
-#     bytesize=8,
-#     timeout=2
-# )
-
-# DECLARING ID's
-gateway_id = gateway_config.gateway_id
-gateway_code = gateway_config.gateway_code
-
-# DECLARING MODBUS CLIENT
-client = ModbusSerialClient(
+MODBUS_SETUP = ModbusSerialClient(
     port='/dev/ttyUSB0',
     baudrate=9600,
     stopbits=1,
@@ -28,6 +14,13 @@ client = ModbusSerialClient(
     bytesize=8,
     timeout=2
 )
+
+# DECLARING MODBUS CLIENT
+client = MODBUS_SETUP
+
+# DECLARING ID's
+gateway_id = gateway_config.gateway_id
+gateway_code = gateway_config.gateway_code
 
 
 # Open connections once at startup — reused for the entire lifetime of the process
@@ -54,16 +47,16 @@ try:
                 print(
                     f"[{date_now}] Cloud still unreachable. Running in offline mode.")
 
-        # if not client.connect():
-        #     print(f"[{date_now}] Attempting to reconnect to Modbus Client...")
-        #     client = MODBUS_SETUP
-        #     if client.connect():
-        #         print(f"[{date_now}] Modbus Client reconnected.")
-        #     else:
-        #         print(
-        #             f"[{date_now}] Modbus Client still unreachable. Cannot read meters.")
-        #         time.sleep(5)
-        #         continue  # Skip this cycle and retry next time
+        if not client.connect():
+            print(f"[{date_now}] Attempting to reconnect to Modbus Client...")
+            client = MODBUS_SETUP
+            if client.connect():
+                print(f"[{date_now}] Modbus Client reconnected.")
+            else:
+                print(
+                    f"[{date_now}] Modbus Client still unreachable. Cannot read meters.")
+                time.sleep(5)
+                continue  # Skip this cycle and retry next time
 
         try:
             # Sync offline queue before polling meters
@@ -74,14 +67,14 @@ try:
                                 to_conn=cloud_conn, fromCloudToLocal=False)
 
             # Fetch meter configuration (uses the already-open local connection)
-            # meter_results = gateway_config.get_metter_ids(local_conn)
-            meter_results = [
-                {
-                    'id': 1,
-                    'sensor_model_id': 2,
-                    'slave_address': 5,
-                    'register_address': [200, 202, 204, 6, 8, 10, 52, 56, 342],
-                    'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'real_power', 'apparent_power', 'energy']}]
+            meter_results = gateway_config.get_metter_ids(local_conn)
+            # meter_results = [
+            #     {
+            #         'id': 1,
+            #         'sensor_model_id': 2,
+            #         'slave_address': 5,
+            #         'register_address': [200, 202, 204, 6, 8, 10, 52, 56, 342],
+            #         'parameter': ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c', 'real_power', 'apparent_power', 'energy']}]
 
             for meter_result in meter_results:
                 model_id = meter_result['sensor_model_id']
