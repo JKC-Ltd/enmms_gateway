@@ -15,17 +15,19 @@ CLOUD_DATABASE = "u565803524_dev_uratex"
 def cloud_database():
     try:
         cloud_connection = mysql.connector.connect(
-            host             = CLOUD_HOST,
-            user             = CLOUD_USER,
-            password         = CLOUD_PASSWORD,
-            database         = CLOUD_DATABASE,
-            connection_timeout = 5,      # give up after 5 seconds if unreachable
+            host               = CLOUD_HOST,
+            user               = CLOUD_USER,
+            password           = CLOUD_PASSWORD,
+            database           = CLOUD_DATABASE,
+            connection_timeout = 5,   # give up connecting after 5 seconds
+            read_timeout       = 5,   # give up waiting for query response after 5 seconds
+            write_timeout      = 5,   # give up waiting to send data after 5 seconds
         )
         if cloud_connection.is_connected():
             return cloud_connection
         else:
             return None
-        
+
     except Error as cloud_error:
         print(f"Cloud database interrupt at {datetime_now}")
         print(f"Cloud Connection failed: {cloud_error}")
@@ -37,7 +39,7 @@ def local_database():
             host     = "localhost",
             user     = "root",
             password = "0smartpower0",
-            database = "enmms",
+            database = "uratex",
         )
         if local_connection.is_connected():
             return local_connection
@@ -49,17 +51,16 @@ def local_database():
 
 def ensure_connected(conn):
     """
-    Check if a connection is alive and reconnect if needed.
-    Uses ping() with a short timeout. If the connection is dead and
-    cannot be recovered, returns None so the caller can handle it.
+    Check if a connection is alive using ping.
+    attempts=1, delay=0 means fail fast — no retrying.
+    Returns None if connection is dead so the caller can handle it.
     """
     if conn is None:
         return None
     try:
-        conn.ping(reconnect=True, attempts=1, delay=0)
+        conn.ping(reconnect=False, attempts=1, delay=0)
         return conn
     except Error:
-        # ping failed — try a fresh connection for cloud, signal failure for local
         print("Connection lost and could not reconnect.")
         return None
 

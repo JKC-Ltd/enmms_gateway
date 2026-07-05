@@ -18,7 +18,7 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
 
     Returns True if cloud insert succeeded, False if it failed or was unavailable.
     The caller (index.py) uses this return value to reset cloud_conn to None
-    so the next cycle attempts to reconnect.
+    so the next cycle attempts to reconnect via cloud_database() with proper timeouts.
     """
     cloud_cursor = None
     local_cursor = None
@@ -30,26 +30,30 @@ def insert_sensor_logs(meter_id, slave_address, column_parameter="", values="",
     # --- Cloud insert ---
     cloud_ok = False
     if cloud_conn:
-        try:
-            db_connections.ensure_connected(cloud_conn)
-            cloud_cursor = cloud_conn.cursor()
-            cloud_cursor.execute(sql, values)
-            cloud_conn.commit()
-            if cloud_cursor.rowcount > 0:
-                print("INSERTED TO CLOUD SUCCESSFULLY")
-                cloud_ok = True
-            else:
-                print("FAILED TO INSERT INTO CLOUD")
-        except mysql.connector.Error as cloud_error:
-            print(f"Cloud insert failed: {cloud_error}")
+        # Check connection is alive — returns None if dead (internet dropped)
+        live_cloud = db_connections.ensure_connected(cloud_conn)
+        if live_cloud is None:
+            print("Cloud connection lost — will queue offline and retry next cycle.")
+        else:
             try:
-                cloud_conn.rollback()
-            except Exception:
-                pass
-        finally:
-            if cloud_cursor:
-                cloud_cursor.close()
-                cloud_cursor = None
+                cloud_cursor = live_cloud.cursor()
+                cloud_cursor.execute(sql, values)
+                live_cloud.commit()
+                if cloud_cursor.rowcount > 0:
+                    print("INSERTED TO CLOUD SUCCESSFULLY")
+                    cloud_ok = True
+                else:
+                    print("FAILED TO INSERT INTO CLOUD")
+            except mysql.connector.Error as cloud_error:
+                print(f"Cloud insert failed: {cloud_error}")
+                try:
+                    live_cloud.rollback()
+                except Exception:
+                    pass
+            finally:
+                if cloud_cursor:
+                    cloud_cursor.close()
+                    cloud_cursor = None
 
     # --- Local insert or offline queue ---
     try:

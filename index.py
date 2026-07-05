@@ -65,7 +65,7 @@ try:
                     try:
                         for register_address in register_addresses:
                             response = client.read_holding_registers(
-                                address=int(register_address), count=2, slave=slave_address
+                                address=int(register_address), count=2, device_id=slave_address
                             )
 
                             if not response.isError():
