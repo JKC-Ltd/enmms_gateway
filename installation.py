@@ -1,21 +1,45 @@
+
 import os
 import subprocess
 import sys
 from pathlib import Path
 
 
-def run(command, check=True):
+def run(command, check=True, env=None):
     print("\n" + "=" * 80)
     print(f"Running:\n{command}")
     print("=" * 80)
 
-    result = subprocess.run(command, shell=True)
+    result = subprocess.run(command, shell=True, env=env)
 
     if check and result.returncode != 0:
         print(f"\nERROR: Command failed ({result.returncode})")
         sys.exit(result.returncode)
 
     return result
+
+
+def get_real_user_home():
+    """
+    Get the actual (non-root) user's home directory even when running via sudo.
+    `Path.home()` returns /root under sudo, which breaks path construction.
+    """
+    sudo_user = os.environ.get("SUDO_USER")
+    if sudo_user:
+        return Path(f"/home/{sudo_user}")
+    return Path.home()
+
+
+def get_php_version():
+    """Detect the installed PHP major.minor version (e.g., '8.2')."""
+    result = subprocess.run(
+        "php -r \"echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;\"",
+        shell=True, capture_output=True, text=True
+    )
+    if result.returncode == 0 and result.stdout.strip():
+        return result.stdout.strip()
+    # Fallback: Debian Bookworm default
+    return "8.2"
 
 
 def write_phpmyadmin_conf():
@@ -42,23 +66,33 @@ def main():
         print("Please run using sudo.")
         sys.exit(1)
 
-    home = Path.home()
+    home = get_real_user_home()
     code_dir = home / "code"
+    activate = f"{home}/jarvis/bin/activate"
+
+    # Non-interactive apt to prevent prompts from stalling the script
+    noninteractive_env = os.environ.copy()
+    noninteractive_env["DEBIAN_FRONTEND"] = "noninteractive"
+
+    ###################################################
+    # 1.1 Install prerequisites for venv and pip
+    ###################################################
+
+    run("apt update", env=noninteractive_env)
+    run("apt upgrade -y", env=noninteractive_env)
+    run("apt install -y python3-venv python3-pip", env=noninteractive_env)
 
     ###################################################
     # 1.2 Create a Python Virtual Environment
     ###################################################
 
-    run("apt install python3-venv -y")
     run(f"python3 -m venv {home}/jarvis")
 
     ###################################################
     # 2.1 Install MariaDB
     ###################################################
 
-    run("apt update")
-    run("apt upgrade -y")
-    run("apt install mariadb-server -y")
+    run("apt install -y mariadb-server", env=noninteractive_env)
     run("systemctl status mariadb", check=False)
 
     ###################################################
@@ -86,13 +120,13 @@ def main():
     # 2.3 Install MariaDB Connector & Dependencies
     ###################################################
 
-    run("apt install libmariadb3 libmariadb-dev -y")
+    run("apt install -y libmariadb3 libmariadb-dev", env=noninteractive_env)
 
     ###################################################
     # 2.4 Install Apache Web Server
     ###################################################
 
-    run("apt install apache2 -y")
+    run("apt install -y apache2", env=noninteractive_env)
     run("systemctl enable --now apache2")
     run("systemctl status apache2", check=False)
 
@@ -100,19 +134,25 @@ def main():
     # 2.5 Install PHP and MySQL Extensions
     ###################################################
 
-    run("apt install php php-mysql -y")
+    run("apt install -y php php-mysql", env=noninteractive_env)
     run("systemctl restart apache2")
 
     ###################################################
     # 2.6 Install phpMyAdmin
     ###################################################
 
-    run("apt install phpmyadmin -y")
+    # Use noninteractive to skip dbconfig-common prompts.
+    # Manual DB setup may be needed after install.
+    run("apt install -y phpmyadmin", env=noninteractive_env)
 
     write_phpmyadmin_conf()
 
+    # Detect the installed PHP version dynamically instead of hardcoding
+    php_version = get_php_version()
+    print(f"Detected PHP version: {php_version}")
+
     run("a2enmod alias")
-    run("a2enmod php8.4")
+    run(f"a2enmod php{php_version}")
     run("a2enconf phpmyadmin")
     run("systemctl reload apache2")
 
@@ -120,7 +160,8 @@ def main():
     # 2.7 Install Additional PHP Extensions
     ###################################################
 
-    run("apt install php-json php-zip php-mbstring php-xml php-curl php-gd libapache2-mod-php -y")
+    run("apt install -y php-json php-zip php-mbstring php-xml php-curl php-gd libapache2-mod-php",
+        env=noninteractive_env)
     run("php -v", check=False)
     run("systemctl restart apache2")
 
@@ -128,38 +169,39 @@ def main():
     # 3.1 Install CURL
     ###################################################
 
-    run("apt install curl unzip -y")
+    run("apt install -y curl unzip", env=noninteractive_env)
     run("curl -V", check=False)
 
     ###################################################
     # 3.2 Install Composer (PHP Dependency Manager)
     ###################################################
 
-    run("curl -sS https://getcomposer.org/installer | php")
-    run("mv composer.phar /usr/local/bin/composer")
+    run("curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer")
     run("composer --version", check=False)
 
     ###################################################
     # 3.3 Install Git
     ###################################################
 
-    run("apt install git -y")
+    run("apt install -y git", env=noninteractive_env)
     run("git -v", check=False)
 
     ###################################################
     # 3.4 Install Node.js and npm
     ###################################################
 
+    # ca-certificates is needed for the NodeSource HTTPS repo on minimal installs
+    run("apt install -y ca-certificates gnupg", env=noninteractive_env)
     run("curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -")
-    run("apt install nodejs -y")
+    run("apt install -y nodejs", env=noninteractive_env)
     run("node -v", check=False)
     run("npm -v", check=False)
 
     # Install npm if missing
-    run("apt install npm -y", check=False)
+    run("apt install -y npm", check=False, env=noninteractive_env)
 
     # Install build tools
-    run("apt install build-essential -y")
+    run("apt install -y build-essential", env=noninteractive_env)
 
     ###################################################
     # 4.1 Create Project Directory
@@ -175,8 +217,6 @@ def main():
 
     if not (code_dir / "uratex_gateway").exists():
         run("git clone https://github.com/JKC-Ltd/uratex_gateway.git")
-
-    activate = f"{home}/jarvis/bin/activate"
 
     run(
         f"bash -c 'source {activate} && "
@@ -210,7 +250,8 @@ def main():
     # 5. Cron Job Configuration
     ###################################################
 
-    cron_job = "*/5 * * * * /bin/bash -c 'source /home/ryan/jarvis/bin/activate && python3 /home/ryan/code/uratex_gateway/index.py'"
+    sudo_user = os.environ.get("SUDO_USER", "ryan")
+    cron_job = f"* * * * * cd {home}/code/uratex_gateway && /usr/bin/git pull"
 
     print("\n" + "=" * 80)
     print("Cron Job Setup")
@@ -221,11 +262,11 @@ def main():
 
     # Add cron job (avoids duplicates by checking if it already exists)
     run(
-        f"(crontab -l 2>/dev/null | grep -F 'uratex_gateway/index.py') || "
-        f"(crontab -l 2>/dev/null; echo '{cron_job}') | crontab -"
+        f"(crontab -u {sudo_user} -l 2>/dev/null | grep -F 'uratex_gateway') || "
+        f"(crontab -u {sudo_user} -l 2>/dev/null; echo '{cron_job}') | crontab -u {sudo_user} -"
     )
 
-    run("crontab -l", check=False)
+    run(f"crontab -u {sudo_user} -l", check=False)
 
     ###################################################
     # 5.4 Enable Cron Service
@@ -238,19 +279,19 @@ def main():
     # 5.5 Make Gateway Script Executable
     ###################################################
 
-    run("chmod +x /home/ryan/code/uratex_gateway/index.py")
+    run(f"chmod +x {home}/code/uratex_gateway/index.py")
 
     ###################################################
     # 6. ENMMS Gateway systemd Service
     ###################################################
 
-    service_content = """[Unit]
+    service_content = f"""[Unit]
 Description=ENMMS Gateway Service
 After=network.target
 
 [Service]
-ExecStart=/bin/bash -c 'source /home/ryan/jarvis/bin/activate && python3 /home/ryan/code/enmms_gateway/index.py'
-WorkingDirectory=/home/ryan/code/enmms_gateway
+ExecStart=/bin/bash -c 'source {home}/jarvis/bin/activate && python3 {home}/code/uratex_gateway/index.py'
+WorkingDirectory={home}/code/uratex_gateway
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -298,6 +339,7 @@ WantedBy=multi-user.target
     print("  1. Edit uratex/.env and set DB_PASSWORD=0SmartPower0")
     print("  2. To switch gateway branch: cd code/uratex_gateway && git checkout <branch_name>")
     print("  3. Verify cron is running: sudo systemctl status cron")
+    print("  4. If phpMyAdmin DB config was skipped, run: sudo dpkg-reconfigure phpmyadmin")
     print("")
 
 
