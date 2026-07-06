@@ -46,17 +46,6 @@ try:
                 print(
                     f"[{date_now}] Cloud still unreachable. Running in offline mode.")
 
-        # if not client.connect():
-        #     print(f"[{date_now}] Attempting to reconnect to Modbus Client...")
-        #     client = MODBUS_SETUP
-        #     if client.connect():
-        #         print(f"[{date_now}] Modbus Client reconnected.")
-        #     else:
-        #         print(
-        #             f"[{date_now}] Modbus Client still unreachable. Cannot read meters.")
-        #         time.sleep(5)
-        #         continue  # Skip this cycle and retry next time
-
         try:
             # Sync offline queue before polling meters
             # Pass cloud_conn by reference — sync() handles None gracefully
@@ -95,7 +84,7 @@ try:
                                 response = client.read_holding_registers(
                                     address=int(register_address),
                                     count=2,
-                                    slave=slave_address
+                                    device_id=slave_address
                                 )
                             else:
                                 # Eastron

@@ -12,6 +12,11 @@ CLOUD_USER = "u565803524_dev_uratex"
 CLOUD_PASSWORD = "m1&XJPSH"
 CLOUD_DATABASE = "u565803524_dev_uratex"
 
+LOCAL_HOST = "localhost"
+LOCAL_USER = "root"
+LOCAL_PASSWORD = "0SmartPower0"
+LOCAL_DATABASE = "uratex"
+
 
 def cloud_database():
     try:
@@ -38,10 +43,10 @@ def cloud_database():
 def local_database():
     try:
         local_connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="0SmartPower0",
-            database="uratex",
+            host=LOCAL_HOST,
+            user=LOCAL_USER,
+            password=LOCAL_PASSWORD,
+            database=LOCAL_DATABASE,
         )
         if local_connection.is_connected():
             return local_connection
@@ -161,14 +166,3 @@ def sync(gateway_id, from_conn, to_conn, fromCloudToLocal=True):
     if failed_ids:
         print(
             f"{len(failed_ids)} rows left in offline queue (invalid queries): {failed_ids}")
-
-
-# insert into `sensor_registers`
-#     (`id`,`sensor_type_id`, `sensor_model_id`, `sensor_reg_address`, `updated_at`, `created_at`)
-# values (1, 1, 1, '0, 6, 12, 18, 342', '2025-02-16 16:15:35', '2025-02-16 16:15:35')
-# ON DUPLICATE KEY UPDATE
-# `sensor_type_id` = VALUES(`sensor_type_id`),
-# `sensor_model_id` = VALUES(`sensor_model_id`),
-# `sensor_reg_address` = VALUES(`sensor_reg_address`),
-# `updated_at` = VALUES(`updated_at`),
-# `created_at` = VALUES(`created_at`)
